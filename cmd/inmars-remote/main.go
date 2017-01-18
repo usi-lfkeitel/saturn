@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bytes"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
@@ -28,10 +30,11 @@ func (i *stringFlagList) Set(value string) error {
 }
 
 var (
-	hostStatList  stringFlagList
-	moduleList    stringFlagList
-	configFile    string
-	sshPrivateKey []byte
+	hostStatList    stringFlagList
+	moduleList      stringFlagList
+	configFile      string
+	sshClientConfig *ssh.ClientConfig
+	checkedHosts    map[string]*utils.ConfigHost
 
 	config *utils.Config
 )
@@ -66,12 +69,16 @@ func main() {
 		panic(err)
 	}
 
+	if err := checkHosts(); err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
+
 	tempFile, err := ioutil.TempFile(config.Core.TempDir, "")
 	if err != nil {
 		panic(err)
 	}
 	tempFileName := tempFile.Name()
-	fmt.Println(tempFileName)
 
 	if err := generateRemoteScript(tempFile, config.Core.ModuleDir, moduleList); err != nil {
 		tempFile.Close()
@@ -87,12 +94,56 @@ func main() {
 	if err := uploadScript(tempFileName); err != nil {
 		panic(err)
 	}
+
+	if err := executeScript(tempFileName); err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
+
+	printResults()
 }
 
 func loadPrivateKey() error {
-	var err error
-	sshPrivateKey, err = ioutil.ReadFile(config.SSH.PrivateKey)
-	return err
+	sshPrivateKey, err := ioutil.ReadFile(config.SSH.PrivateKey)
+	if err != nil {
+		return err
+	}
+
+	signer, err := ssh.ParsePrivateKey(sshPrivateKey)
+	if err != nil {
+		return err
+	}
+
+	sshClientConfig = &ssh.ClientConfig{
+		User: "lfkeitel",
+		Auth: []ssh.AuthMethod{
+			ssh.PublicKeys(signer),
+		},
+	}
+	return nil
+}
+
+func checkHosts() error {
+	hosts := make(map[string]*utils.ConfigHost)
+
+	if len(hostStatList) != 0 {
+		realHosts := config.GetRealHosts()
+		for _, host := range hostStatList {
+			configHost, ok := realHosts[host]
+			if !ok {
+				return fmt.Errorf("Host %s not found", host)
+			}
+			if configHost.Disable {
+				continue
+			}
+			hosts[host] = configHost
+		}
+	} else {
+		hosts = config.GetRealHosts()
+	}
+
+	checkedHosts = hosts
+	return nil
 }
 
 func generateRemoteScript(file *os.File, modulesDir string, modules []string) error {
@@ -143,7 +194,12 @@ main() {
 		file.WriteString("\n}\n\n")
 	}
 
-	file.WriteString("main\n")
+	file.WriteString(`main
+
+if [ "$1" = "-d" ]; then
+	rm "$0"
+fi
+`)
 
 	return nil
 }
@@ -160,24 +216,7 @@ func uploadScript(genFilename string) error {
 		return err
 	}
 
-	var hosts map[string]utils.ConfigHost
-	if len(hostStatList) != 0 {
-		hosts = make(map[string]utils.ConfigHost)
-		for _, host := range hostStatList {
-			configHost, ok := config.Hosts[host]
-			if !ok {
-				return fmt.Errorf("Host %s not found", host)
-			}
-			if configHost.Disable {
-				continue
-			}
-			hosts[host] = configHost
-		}
-	} else {
-		hosts = config.Hosts
-	}
-
-	for _, host := range hosts {
+	for _, host := range checkedHosts {
 		if host.Disable {
 			continue
 		}
@@ -202,21 +241,14 @@ func uploadScript(genFilename string) error {
 	return nil
 }
 
-func uploadRemoteScript(host utils.ConfigHost, f *os.File, s os.FileInfo) error {
-	signer, _ := ssh.ParsePrivateKey(sshPrivateKey)
-	clientConfig := &ssh.ClientConfig{
-		User: "lfkeitel",
-		Auth: []ssh.AuthMethod{
-			ssh.PublicKeys(signer),
-		},
+func uploadRemoteScript(host *utils.ConfigHost, f *os.File, s os.FileInfo) error {
+	if host.SSHConnection == nil {
+		if err := host.ConnectSSH(sshClientConfig); err != nil {
+			return err
+		}
 	}
 
-	client, err := ssh.Dial("tcp", host.Address+":22", clientConfig)
-	if err != nil {
-		return err
-	}
-
-	session, err := client.NewSession()
+	session, err := host.SSHConnection.NewSession()
 	if err != nil {
 		return err
 	}
@@ -254,4 +286,57 @@ func uploadLocalScript(f *os.File, s os.FileInfo) error {
 
 	io.Copy(out, f)
 	return nil
+}
+
+func executeScript(filename string) error {
+	filename = path.Base(filename)
+	for _, host := range checkedHosts {
+		if host.Disable {
+			continue
+		}
+
+		if host.SSHConnection == nil {
+			if err := host.ConnectSSH(sshClientConfig); err != nil {
+				return err
+			}
+		}
+
+		session, err := host.SSHConnection.NewSession()
+		if err != nil {
+			return err
+		}
+
+		var stdoutBuf bytes.Buffer
+		var stderrBuf bytes.Buffer
+		session.Stdout = &stdoutBuf
+		session.Stderr = &stderrBuf
+
+		if err := session.Run("/bin/bash /home/lfkeitel/.inmars/" + filename + " -d"); err != nil {
+			fmt.Println(err.Error())
+			fmt.Println(stderrBuf.String())
+			session.Close()
+			continue
+		}
+		session.Close()
+
+		var response utils.HostResponse
+		if err := json.Unmarshal(stdoutBuf.Bytes(), &response); err != nil {
+			fmt.Println(err.Error())
+			continue
+		}
+
+		host.SetResponse(&response)
+	}
+	return nil
+}
+
+func printResults() {
+	for hostname, host := range checkedHosts {
+		if host.Disable {
+			continue
+		}
+
+		fmt.Printf("Stats for %s:\n\n", hostname)
+		host.Response.Print()
+	}
 }

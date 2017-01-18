@@ -5,6 +5,8 @@ import (
 	"io/ioutil"
 	"os"
 
+	"golang.org/x/crypto/ssh"
+
 	"github.com/naoina/toml"
 )
 
@@ -19,11 +21,37 @@ type Config struct {
 		PrivateKey string
 	}
 	Hosts map[string]ConfigHost
+	hosts map[string]*ConfigHost
+}
+
+func (c *Config) GetRealHosts() map[string]*ConfigHost {
+	if c.hosts == nil {
+		c.hosts = make(map[string]*ConfigHost)
+		for hostname, host := range c.Hosts {
+			c.hosts[hostname] = &ConfigHost{
+				Address: host.Address,
+				Disable: host.Disable,
+			}
+		}
+	}
+	return c.hosts
 }
 
 type ConfigHost struct {
-	Address string
-	Disable bool
+	Address       string
+	Disable       bool
+	SSHConnection *ssh.Client
+	Response      *HostResponse
+}
+
+func (c *ConfigHost) ConnectSSH(clientConfig *ssh.ClientConfig) error {
+	var err error
+	c.SSHConnection, err = ssh.Dial("tcp", c.Address+":22", clientConfig)
+	return err
+}
+
+func (c *ConfigHost) SetResponse(r *HostResponse) {
+	c.Response = r
 }
 
 // FindConfigFile will locate the a configuration file by looking at the following places
