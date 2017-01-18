@@ -18,6 +18,7 @@ type Config struct {
 		TempDir       string
 		ModuleDir     string
 		RemoteBaseDir string
+		KeepTempFiles bool
 	}
 	SSH struct {
 		PrivateKey string

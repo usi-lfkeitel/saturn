@@ -19,12 +19,12 @@ func GenerateScript(config *utils.Config, modules []string) (string, error) {
 
 	if err := generateRemoteScript(tempFile, config.Core.ModuleDir, modules); err != nil {
 		tempFile.Close()
-		return "", err
+		return tempFileName, err
 	}
 	tempFile.Close()
 
 	if err := os.Chmod(tempFileName, 0755); err != nil {
-		return "", err
+		return tempFileName, err
 	}
 
 	return tempFileName, nil
@@ -65,10 +65,9 @@ main() {
 			continue
 		}
 
-		m, err := ioutil.ReadFile(moduleFile)
+		m, err := getBinData(moduleFile)
 		if err != nil {
-			fmt.Println(err)
-			continue
+			return err
 		}
 
 		goodModules[module] = true

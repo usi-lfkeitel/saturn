@@ -6,6 +6,7 @@ type HostResponse struct {
 	ArpCache       []*ArpCache       `json:"arp_cache,omitempty"`
 	CurrentRam     *CurrentRam       `json:"current_ram,omitempty"`
 	DiskPartitions []*DiskPartitions `json:"disk_partitions,omitempty"`
+	GeneralInfo    *GeneralInfo      `json:"general_info"`
 	Host           *ConfigHost       `json:"host"`
 }
 
@@ -24,6 +25,10 @@ func (r *HostResponse) Print() {
 	}
 	if len(r.DiskPartitions) > 0 {
 		printDiskPartitions(r.DiskPartitions)
+		fmt.Println("")
+	}
+	if r.GeneralInfo != nil {
+		printGeneralInfo(r.GeneralInfo)
 		fmt.Println("")
 	}
 }
@@ -77,4 +82,21 @@ func printDiskPartitions(d []*DiskPartitions) {
 		fmt.Printf("Used %%: %s\n", partition.UsedPercent)
 		fmt.Printf("Mount Point: %s\n\n", partition.Mounted)
 	}
+}
+
+type GeneralInfo struct {
+	OS         string `json:"os"`
+	Kernel     string `json:"kernel"`
+	Hostname   string `json:"hostname"`
+	Uptime     string `json:"uptime"`
+	ServerTime string `json:"server_time"`
+}
+
+func printGeneralInfo(g *GeneralInfo) {
+	fmt.Println("General Info:")
+	fmt.Printf("OS: %s\n", g.OS)
+	fmt.Printf("Kernel: %s\n", g.Kernel)
+	fmt.Printf("Hostname: %s\n", g.Hostname)
+	fmt.Printf("Uptime: %s\n", g.Uptime)
+	fmt.Printf("Server Time: %s\n", g.ServerTime)
 }

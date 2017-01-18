@@ -1,9 +1,12 @@
 package main
 
+//go:generate go run ../compileAssets.go -o ../../src/remote/bindata.go -i ../../modules -r ../../ -p remote
+
 import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"log"
 	"os"
 	"strings"
 
@@ -33,7 +36,6 @@ var (
 
 const (
 	remoteBasePath string = "$HOME"
-	keepTempFile   bool   = false
 )
 
 func init() {
@@ -56,35 +58,40 @@ func main() {
 
 	config, err := utils.NewConfig(configFile)
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Println(err.Error())
 		os.Exit(1)
 	}
 
 	if err := remote.LoadPrivateKey(config.SSH.PrivateKey); err != nil {
-		fmt.Println(err.Error())
+		log.Println(err.Error())
 		os.Exit(1)
 	}
 
 	checkedHosts, err := utils.CheckHosts(config, hostStatList)
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Println(err.Error())
 		os.Exit(1)
 	}
 
 	tempFileName, err := remote.GenerateScript(config, moduleList)
+	if err != nil {
+		os.Remove(tempFileName)
+		log.Println(err.Error())
+		os.Exit(1)
+	}
 
 	if err := remote.UploadScript(config, checkedHosts, tempFileName); err != nil {
-		fmt.Println(err.Error())
+		log.Println(err.Error())
 		os.Exit(1)
 	}
 
 	resps, err := remote.ExecuteScript(config, checkedHosts, tempFileName)
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Println(err.Error())
 		os.Exit(1)
 	}
 
-	if !keepTempFile {
+	if !config.Core.KeepTempFiles {
 		os.Remove(tempFileName)
 	}
 

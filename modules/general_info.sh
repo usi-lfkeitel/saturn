@@ -19,4 +19,4 @@ hostname=$(/bin/hostname)
 uptime_seconds=$(/bin/cat /proc/uptime | awk '{print $1}')
 server_time=$(date)
 
-echo -n "{\"OS\":\"$lsbRelease\",\"Kernel\":$uname\",\"Hostname\":\"$hostname\",\"Uptime\":\"$(displaytime ${uptime_seconds%.*})\",\"Server Time\":\"$server_time\"}"
+echo -n "{\"os\":\"$lsbRelease\",\"kernel\":\"$uname\",\"hostname\":\"$hostname\",\"uptime\":\"$(displaytime ${uptime_seconds%.*})\",\"server_time\":\"$server_time\"}"
