@@ -3,9 +3,10 @@ package utils
 import "fmt"
 
 type HostResponse struct {
-	ArpCache       []*ArpCache       `json:"arp_cache"`
-	CurrentRam     *CurrentRam       `json:"current_ram"`
-	DiskPartitions []*DiskPartitions `json:"disk_partitions"`
+	ArpCache       []*ArpCache       `json:"arp_cache,omitempty"`
+	CurrentRam     *CurrentRam       `json:"current_ram,omitempty"`
+	DiskPartitions []*DiskPartitions `json:"disk_partitions,omitempty"`
+	Host           *ConfigHost       `json:"host"`
 }
 
 func (r *HostResponse) Print() {

@@ -2,6 +2,7 @@ package utils
 
 import (
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"os"
 
@@ -14,44 +15,28 @@ import (
 type Config struct {
 	sourceFile string
 	Core       struct {
-		TempDir   string
-		ModuleDir string
+		TempDir       string
+		ModuleDir     string
+		RemoteBaseDir string
 	}
 	SSH struct {
 		PrivateKey string
 	}
-	Hosts map[string]ConfigHost
-	hosts map[string]*ConfigHost
-}
-
-func (c *Config) GetRealHosts() map[string]*ConfigHost {
-	if c.hosts == nil {
-		c.hosts = make(map[string]*ConfigHost)
-		for hostname, host := range c.Hosts {
-			c.hosts[hostname] = &ConfigHost{
-				Address: host.Address,
-				Disable: host.Disable,
-			}
-		}
-	}
-	return c.hosts
+	Hosts    []*ConfigHost
+	HostsMap map[string]*ConfigHost
 }
 
 type ConfigHost struct {
-	Address       string
-	Disable       bool
-	SSHConnection *ssh.Client
-	Response      *HostResponse
+	Name          string      `json:"name"`
+	Address       string      `json:"address"`
+	Disable       bool        `json:"disabled"`
+	SSHConnection *ssh.Client `json:"-"`
 }
 
 func (c *ConfigHost) ConnectSSH(clientConfig *ssh.ClientConfig) error {
 	var err error
 	c.SSHConnection, err = ssh.Dial("tcp", c.Address+":22", clientConfig)
 	return err
-}
-
-func (c *ConfigHost) SetResponse(r *HostResponse) {
-	c.Response = r
 }
 
 // FindConfigFile will locate the a configuration file by looking at the following places
@@ -105,6 +90,15 @@ func NewConfig(configFile string) (conf *Config, err error) {
 		return nil, err
 	}
 	con.sourceFile = configFile
+
+	con.HostsMap = make(map[string]*ConfigHost)
+	for _, host := range con.Hosts {
+		if _, exists := con.HostsMap[host.Name]; exists {
+			return nil, fmt.Errorf("Host %s duplicated in configuration", host.Name)
+		}
+		con.HostsMap[host.Name] = host
+	}
+
 	return &con, nil
 }
 
