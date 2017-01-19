@@ -1,4 +1,6 @@
 #!/bin/bash
+#gen:module a appName:string,id:string,mode:string,pid:string,status:string,restart:string,uptime:string,memory:string,watching:string
+
 pm_command=$(which pm2 2>/dev/null)
 
 if [ -z $pm_command ]; then

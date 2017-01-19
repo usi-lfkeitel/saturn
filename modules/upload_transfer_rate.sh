@@ -1,9 +1,11 @@
 #!/bin/bash
+#gen:module a interface:string,transfer_rate:int
+
 files=(/sys/class/net/*)
 pos=$(( ${#files[*]} - 1 ))
 last=${files[$pos]}
 
-json_output="{"
+json_output='['
 
 for interface in "${files[@]}"; do
     basename=$(basename "$interface")
@@ -24,7 +26,7 @@ for interface in "${files[@]}"; do
     out_kbytes=$((out_bytes / 1024))
 
     # convert transfer rate to KB
-    json_output="$json_output \"$basename\": $out_kbytes"
+    json_output="$json_output {\"interface\": \"$basename\", \"transfer_rate\": $out_kbytes}"
 
     # if it is not the last line
     if [[ ! $interface == $last ]]; then
@@ -34,4 +36,4 @@ for interface in "${files[@]}"; do
 done
 
 # close the JSON object & print to screen
-echo -n "$json_output}"
+echo -n "$json_output]"

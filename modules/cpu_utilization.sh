@@ -1,4 +1,6 @@
 #!/bin/bash
+#gen:module o util:int
+
 PREV_TOTAL=0
 PREV_IDLE=0
 iteration=0
@@ -28,4 +30,4 @@ while [[ iteration -lt 2 ]]; do
   sleep 1
   iteration="$iteration+1"
 done
-echo -en "$DIFF_USAGE"
+echo -en "{\"util\": $DIFF_USAGE}"

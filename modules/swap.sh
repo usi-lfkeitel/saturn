@@ -1,4 +1,6 @@
 #!/bin/bash
+#gen:module a filename:string,type:string,size:string,used:string,priority:string
+
 catCmd=`which cat`;
 wcCmd=`which wc`;
 awkCmd=`which awk`

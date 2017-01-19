@@ -1,4 +1,6 @@
 #!/bin/bash
+#gen:module a user:string,ip:string,date:string
+
 result=$(/usr/bin/lastlog -t 365 \
       | /usr/bin/awk 'NR>1 {\
         print "{ \

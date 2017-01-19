@@ -1,4 +1,6 @@
 #!/bin/bash
+#gen:module o bytes:int,bytes_read:int,bytes_written:int
+
 echo "stats" \
   | /bin/nc -w 1 127.0.0.1 11211 \
   | /bin/grep 'bytes' \

@@ -1,4 +1,6 @@
 #!/bin/bash
+#gen:module a addr:string,hw_type:string,hw_addr:string,mask:string
+
 # TODO: Fix parsed output. Mask doesn't show most of the time so the interface
 # name is being used as the mask.
 arpCommand=$(which arp 2>/dev/null)

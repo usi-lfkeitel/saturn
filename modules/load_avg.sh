@@ -1,4 +1,6 @@
 #!/bin/bash
+#gen:module o avg_1_min:int,avg_5_min:int,avg_15_min:int
+
 grepCmd=`which grep`
 awkCmd=`which awk`
 catCmd=`which cat`
@@ -9,6 +11,6 @@ if [ $numberOfCores -eq 0 ]; then
   numberOfCores=1
 fi
 
-result=$($catCmd /proc/loadavg | $awkCmd '{print "{\"1_min_avg\":"($1*100)/'$numberOfCores'",\"5_min_avg\":"($2*100)/'$numberOfCores'",\"15_min_avg\":"($3*100)/'$numberOfCores' "},"}')
+result=$($catCmd /proc/loadavg | $awkCmd '{print "{\"avg_1_min\":"($1*100)/'$numberOfCores'",\"avg_5_min\":"($2*100)/'$numberOfCores'",\"avg_15_min\":"($3*100)/'$numberOfCores' "},"}')
 
 echo -n ${result%?}

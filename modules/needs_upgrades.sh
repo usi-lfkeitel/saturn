@@ -1,4 +1,5 @@
 #!/bin/bash
+#gen:module a package:string,installed:string,available:string
 
 DISTRO=$(grep -oP '^ID="?.*"?' /etc/os-release | cut -d"=" -f2 | tr -d '"')
 

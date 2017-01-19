@@ -1,4 +1,6 @@
 #!/bin/bash
+#gen:module o connections:int,address:string
+
 netstatCmd=`which netstat`
 awkCmd=`which awk`
 sortCmd=`which sort`

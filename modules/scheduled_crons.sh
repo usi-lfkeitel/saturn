@@ -1,4 +1,6 @@
 #!/bin/bash
+#gen:module a min:string,hrs:string,day:string,month:string,wkday:string,user:string,cmd:string
+
 ######
 # Credit: http://stackoverflow.com/questions/134906/how-do-i-list-all-cron-jobs-for-all-users#answer-137173
 ######
@@ -81,7 +83,7 @@ $catCmd "${temp}" \
                 " \"month\": \"" $4 "\", " \
                 " \"wkday\": \"" $5 "\", " \
                 " \"user\": \"" $6 "\", " \
-                " \"CMD\": \""} \
+                " \"cmd\": \""} \
                     {for(i=7;i<=NF;++i) printf("%s ", gensub("\"", "\\\\\"", "g", $i) ) } \
                 {print "\" " \
                 "}," } \

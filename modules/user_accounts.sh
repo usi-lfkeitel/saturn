@@ -1,4 +1,6 @@
 #!/bin/bash
+#gen:module a type:string,user:string,home:string
+
 result=$(/usr/bin/awk -F: '{ \
         if ($3<=499) {userType="system";} \
         else {userType="user";} \

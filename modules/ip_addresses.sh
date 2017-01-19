@@ -1,4 +1,6 @@
 #!/bin/bash
+#gen:module a interface:string,ip:string
+
 grepCmd=`which grep`
 ifconfigCmd=`which ifconfig`
 

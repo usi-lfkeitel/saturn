@@ -1,6 +1,7 @@
 package main
 
 //go:generate go run ../compileAssets.go -o ../../src/remote/bindata.go -i ../../modules -r ../../ -p remote
+//go:generate go run ../generateModuleTypes/main.go -o ../../src/utils/moduleTypes.go -i ../../modules -p utils
 
 import (
 	"encoding/json"

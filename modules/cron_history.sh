@@ -1,4 +1,6 @@
 #!/bin/bash
+#gen:module a time:string,user:string,message:string
+
 grepCmd=$(which grep)
 cronLog='/var/log/syslog'
 numberOfLines='50'

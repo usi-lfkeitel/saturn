@@ -1,4 +1,6 @@
 #!/bin/bash
+#gen:module o redis_version:string,connected_clients:string,connected_slaves:string,used_memory_human:string,total_connections_received:string,total_commands_processed:string
+
 ########### Enter Your Redis Password  HERE #########
 redisPassword=$REDIS_PASSWORD
 ########### Enter Your Redis Password  HERE #########

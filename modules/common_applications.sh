@@ -1,4 +1,6 @@
 #!/bin/bash
+#gen:module a binary:string,location:string,installed:bool
+
 result=$(whereis php node mysql mongo vim python ruby java apache2 nginx openssl vsftpd make \
 | awk -F: '{if(length($2)==0) { installed="false"; } else { installed="true"; } \
       print \

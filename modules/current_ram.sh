@@ -1,4 +1,5 @@
 #!/bin/bash
+#gen:module o total:float64:MB,used:float64:MB,available:float64:MB
 awkCmd=`which awk`
 catCmd=`which cat`
 grepCmd=`which grep`

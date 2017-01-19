@@ -1,4 +1,6 @@
 #!/bin/bash
+#gen:module o os:string,kernel:string,hostname:string,uptime:string,server_time:string
+
 function displaytime {
   local T=$1
   local D=$((T/60/60/24))
