@@ -1,0 +1,31 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "A6nZdZ1/lTOVINhIndyw2ZWN9JU=",
+			"path": "github.com/naoina/go-stringutil",
+			"revision": "6b638e95a32d0c1131db0e7fe83775cbea4a0d0b",
+			"revisionTime": "2015-11-18T23:44:43Z"
+		},
+		{
+			"checksumSHA1": "MUYxtCY95dt/b/5cmzP0x1b9d/E=",
+			"path": "github.com/naoina/toml",
+			"revision": "751171607256bb66e64c9f0220c00662420c38e9",
+			"revisionTime": "2015-07-27T12:48:37Z"
+		},
+		{
+			"checksumSHA1": "6Sd81okp0F1ByCD/xCP9L1+v4Xs=",
+			"path": "github.com/naoina/toml/ast",
+			"revision": "751171607256bb66e64c9f0220c00662420c38e9",
+			"revisionTime": "2015-07-27T12:48:37Z"
+		},
+		{
+			"checksumSHA1": "H+feAfAdnIKoFeRjHBw5Bnp7vvs=",
+			"path": "golang.org/x/crypto/ssh",
+			"revision": "b8a2a83acfe6e6770b75de42d5ff4c67596675c0",
+			"revisionTime": "2017-01-13T19:21:00Z"
+		}
+	],
+	"rootPath": "github.com/lfkeitel/saturn"
+}
