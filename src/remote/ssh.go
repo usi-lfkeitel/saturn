@@ -11,7 +11,7 @@ import (
 	"os"
 	"path"
 
-	"github.com/lfkeitel/inmars/src/utils"
+	"github.com/lfkeitel/saturn/src/utils"
 
 	"golang.org/x/crypto/ssh"
 )
@@ -99,7 +99,7 @@ func uploadRemoteScript(config *utils.Config, host *utils.ConfigHost, f *os.File
 	go func() {
 		w, _ := session.StdinPipe()
 		defer w.Close()
-		fmt.Fprintln(w, "D0755", 0, ".inmars") // mkdir
+		fmt.Fprintln(w, "D0755", 0, ".saturn") // mkdir
 		fmt.Fprintf(w, "C%#o %d %s\n", s.Mode().Perm(), s.Size(), path.Base(f.Name()))
 		io.Copy(w, f)
 		fmt.Fprint(w, "\x00")
@@ -129,7 +129,7 @@ func ExecuteScript(config *utils.Config, hosts map[string]*utils.ConfigHost, fil
 		session.Stdout = &stdoutBuf
 		session.Stderr = &stderrBuf
 
-		cmd := fmt.Sprintf("/bin/bash %s/.inmars/%s -d", config.Core.RemoteBaseDir, filename)
+		cmd := fmt.Sprintf("/bin/bash %s/.saturn/%s -d", config.Core.RemoteBaseDir, filename)
 		if err := session.Run(cmd); err != nil {
 			fmt.Println(err.Error())
 			fmt.Println(stderrBuf.String())

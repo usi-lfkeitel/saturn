@@ -1,7 +1,7 @@
 export GO15VENDOREXPERIMENT=1
 
 # variable definitions
-NAME := inmars
+NAME := saturn
 DESC := Server statistics client
 VERSION := $(shell git describe --tags --always --dirty)
 GOVERSION := $(shell go version)
@@ -16,9 +16,9 @@ LDFLAGS := -X 'main.version=$(VERSION)' \
 			-X 'main.builder=$(BUILDER)' \
 			-X 'main.goversion=$(GOVERSION)'
 
-.PHONY: all doc fmt alltests test coverage benchmark lint vet inmars dist
+.PHONY: all doc fmt alltests test coverage benchmark lint vet saturn dist
 
-all: test inmars
+all: test saturn
 
 # development tasks
 doc:
@@ -47,19 +47,19 @@ lint:
 vet:
 	@go vet $$(go list ./src/...)
 
-inmars:
-	GOBIN=$(PWD)/bin go install -v -ldflags "$(LDFLAGS)" -tags '$(BUILDTAGS)' ./cmd/inmars
+saturn:
+	GOBIN=$(PWD)/bin go install -v -ldflags "$(LDFLAGS)" -tags '$(BUILDTAGS)' ./cmd/saturn
 
 dist: vet all
 	@rm -rf ./dist
-	@mkdir -p dist/inmars
+	@mkdir -p dist/saturn
 
-	@cp LICENSE dist/inmars/
-	@cp README.md dist/inmars/
+	@cp LICENSE dist/saturn/
+	@cp README.md dist/saturn/
 
-	@mkdir dist/inmars/bin
-	@cp bin/inmars dist/inmars/bin/inmars
+	@mkdir dist/saturn/bin
+	@cp bin/saturn dist/saturn/bin/saturn
 
-	(cd "dist"; tar -cz inmars) > "dist/inmars-dist-$(VERSION).tar.gz"
+	(cd "dist"; tar -cz saturn) > "dist/saturn-dist-$(VERSION).tar.gz"
 
-	@rm -rf dist/inmars
+	@rm -rf dist/saturn

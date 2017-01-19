@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/lfkeitel/inmars/src/utils"
+	"github.com/lfkeitel/saturn/src/utils"
 )
 
 func GenerateScript(config *utils.Config, modules []string) (string, error) {

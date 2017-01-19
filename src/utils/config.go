@@ -43,19 +43,19 @@ func (c *ConfigHost) ConnectSSH(clientConfig *ssh.ClientConfig) error {
 }
 
 // FindConfigFile will locate the a configuration file by looking at the following places
-// and choosing the first: INMARS_CONFIG env variable, $PWD/config.toml, $PWD/config/config.toml,
-// $HOME/.inmars/config.toml, and /etc/inmars/config.toml.
+// and choosing the first: SATURN_CONFIG env variable, $PWD/config.toml, $PWD/config/config.toml,
+// $HOME/.saturn/config.toml, and /etc/saturn/config.toml.
 func FindConfigFile() string {
-	if os.Getenv("INMARS_CONFIG") != "" && FileExists(os.Getenv("INMARS_CONFIG")) {
-		return os.Getenv("INMARS_CONFIG")
+	if os.Getenv("SATURN_CONFIG") != "" && FileExists(os.Getenv("SATURN_CONFIG")) {
+		return os.Getenv("SATURN_CONFIG")
 	} else if FileExists("./config.toml") {
 		return "./config.toml"
 	} else if FileExists("./config/config.toml") {
 		return "./config/config.toml"
-	} else if FileExists(os.ExpandEnv("$HOME/.inmars/config.toml")) {
-		return os.ExpandEnv("$HOME/.inmars/config.toml")
-	} else if FileExists("/etc/inmars/config.toml") {
-		return "/etc/inmars/config.toml"
+	} else if FileExists(os.ExpandEnv("$HOME/.saturn/config.toml")) {
+		return os.ExpandEnv("$HOME/.saturn/config.toml")
+	} else if FileExists("/etc/saturn/config.toml") {
+		return "/etc/saturn/config.toml"
 	}
 	return ""
 }

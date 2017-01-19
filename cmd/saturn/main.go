@@ -11,8 +11,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/lfkeitel/inmars/src/remote"
-	"github.com/lfkeitel/inmars/src/utils"
+	"github.com/lfkeitel/saturn/src/remote"
+	"github.com/lfkeitel/saturn/src/utils"
 )
 
 type stringFlagList []string
@@ -135,7 +135,7 @@ func printResults(resps []*utils.HostResponse) {
 }
 
 func displayVersionInfo() {
-	fmt.Printf(`INMars - (C) 2016 University of Southern Indiana - Lee Keitel
+	fmt.Printf(`Saturn - (C) 2016 University of Southern Indiana - Lee Keitel
 
 Model:       CLI Client
 Version:     %s
