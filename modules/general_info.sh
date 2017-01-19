@@ -12,11 +12,10 @@ function displaytime {
   printf '%d seconds\n' $S
 }
 
-lsbRelease=$(/usr/bin/lsb_release -ds | sed -e 's/^"//'  -e 's/"$//')
+distro=$(grep -oP '^NAME="?.*"?' /etc/os-release | cut -d"=" -f2 | tr -d '"')
 uname=$(/bin/uname -r | sed -e 's/^"//'  -e 's/"$//')
-#os=`echo $lsbRelease $uname`
 hostname=$(/bin/hostname)
 uptime_seconds=$(/bin/cat /proc/uptime | awk '{print $1}')
 server_time=$(date)
 
-echo -n "{\"os\":\"$lsbRelease\",\"kernel\":\"$uname\",\"hostname\":\"$hostname\",\"uptime\":\"$(displaytime ${uptime_seconds%.*})\",\"server_time\":\"$server_time\"}"
+echo -n "{\"os\":\"$distro\",\"kernel\":\"$uname\",\"hostname\":\"$hostname\",\"uptime\":\"$(displaytime ${uptime_seconds%.*})\",\"server_time\":\"$server_time\"}"

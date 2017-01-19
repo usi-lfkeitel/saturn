@@ -3,9 +3,11 @@ package remote
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"os"
 	"path"
 
@@ -16,22 +18,37 @@ import (
 
 var sshClientConfig *ssh.ClientConfig
 
-func LoadPrivateKey(filename string) error {
-	sshPrivateKey, err := ioutil.ReadFile(filename)
-	if err != nil {
-		return err
+func LoadPrivateKey(config *utils.Config) error {
+	if config.SSH.Username == "" {
+		return errors.New("No SSH username configured")
 	}
 
-	signer, err := ssh.ParsePrivateKey(sshPrivateKey)
-	if err != nil {
-		return err
+	authMethods := make([]ssh.AuthMethod, 0, 2)
+
+	if config.SSH.PrivateKey != "" {
+		sshPrivateKey, err := ioutil.ReadFile(config.SSH.PrivateKey)
+		if err != nil {
+			return err
+		}
+
+		signer, err := ssh.ParsePrivateKey(sshPrivateKey)
+		if err != nil {
+			return err
+		}
+		authMethods = append(authMethods, ssh.PublicKeys(signer))
+	}
+
+	if config.SSH.Password != "" {
+		authMethods = append(authMethods, ssh.Password(config.SSH.Password))
+	}
+
+	if len(authMethods) == 0 {
+		return errors.New("No SSH authentication methods configured")
 	}
 
 	sshClientConfig = &ssh.ClientConfig{
-		User: "lfkeitel",
-		Auth: []ssh.AuthMethod{
-			ssh.PublicKeys(signer),
-		},
+		User: config.SSH.Username,
+		Auth: authMethods,
 	}
 	return nil
 }
@@ -56,13 +73,6 @@ func UploadScript(config *utils.Config, hosts map[string]*utils.ConfigHost, genF
 		_, err = f.Seek(0, 0) // rewind file reader
 		if err != nil {
 			return err
-		}
-
-		if host.Address == "localhost" || host.Address == "127.0.0.1" {
-			if err := uploadLocalScript(config, f, s); err != nil {
-				fmt.Println(err.Error())
-			}
-			continue
 		}
 
 		if err := uploadRemoteScript(config, host, f, s); err != nil {
@@ -99,27 +109,6 @@ func uploadRemoteScript(config *utils.Config, host *utils.ConfigHost, f *os.File
 	return session.Run(cmd)
 }
 
-func uploadLocalScript(config *utils.Config, f *os.File, s os.FileInfo) error {
-	expandedPath := os.ExpandEnv(config.Core.RemoteBaseDir)
-
-	if err := os.MkdirAll(path.Join(expandedPath, ".inmars"), 0755); err != nil {
-		return err
-	}
-
-	out, err := os.OpenFile(
-		path.Join(expandedPath, ".inmars", path.Base(f.Name())),
-		os.O_CREATE|os.O_TRUNC|os.O_WRONLY,
-		0755,
-	)
-	if err != nil {
-		return err
-	}
-	defer out.Close()
-
-	io.Copy(out, f)
-	return nil
-}
-
 func ExecuteScript(config *utils.Config, hosts map[string]*utils.ConfigHost, filename string) ([]*utils.HostResponse, error) {
 	filename = path.Base(filename)
 	responses := make([]*utils.HostResponse, 0, len(hosts))
@@ -148,6 +137,10 @@ func ExecuteScript(config *utils.Config, hosts map[string]*utils.ConfigHost, fil
 			continue
 		}
 		session.Close()
+
+		if stderrBuf.Len() > 0 {
+			log.Println(stderrBuf.String())
+		}
 
 		var response utils.HostResponse
 		if err := json.Unmarshal(stdoutBuf.Bytes(), &response); err != nil {

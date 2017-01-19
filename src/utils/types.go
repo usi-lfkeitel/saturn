@@ -6,29 +6,49 @@ type HostResponse struct {
 	ArpCache       []*ArpCache       `json:"arp_cache,omitempty"`
 	CurrentRam     *CurrentRam       `json:"current_ram,omitempty"`
 	DiskPartitions []*DiskPartitions `json:"disk_partitions,omitempty"`
-	GeneralInfo    *GeneralInfo      `json:"general_info"`
+	GeneralInfo    *GeneralInfo      `json:"general_info,omitempty"`
+	NeedsUpgrades  []*NeedsUpgrade   `json:"needs_upgrades,omitempty"`
 	Host           *ConfigHost       `json:"host"`
 }
 
-func (r *HostResponse) Print() {
+func (r *HostResponse) Print(short bool) {
 	if r == nil {
 		return
 	}
 
+	if short {
+		r.printShort()
+		return
+	}
+	r.printLong()
+}
+
+func (r *HostResponse) printShort() {
+	if len(r.NeedsUpgrades) > 0 {
+		printShortNeedsUpgrade(r.NeedsUpgrades)
+		fmt.Println("")
+	}
+}
+
+func (r *HostResponse) printLong() {
 	if len(r.ArpCache) > 0 {
-		printArpCache(r.ArpCache)
+		printLongArpCache(r.ArpCache)
 		fmt.Println("")
 	}
 	if r.CurrentRam != nil {
-		printCurrentRam(r.CurrentRam)
+		printLongCurrentRam(r.CurrentRam)
 		fmt.Println("")
 	}
 	if len(r.DiskPartitions) > 0 {
-		printDiskPartitions(r.DiskPartitions)
+		printLongDiskPartitions(r.DiskPartitions)
 		fmt.Println("")
 	}
 	if r.GeneralInfo != nil {
-		printGeneralInfo(r.GeneralInfo)
+		printLongGeneralInfo(r.GeneralInfo)
+		fmt.Println("")
+	}
+	if len(r.NeedsUpgrades) > 0 {
+		printLongNeedsUpgrade(r.NeedsUpgrades)
 		fmt.Println("")
 	}
 }
@@ -40,7 +60,7 @@ type ArpCache struct {
 	Mask   string `json:"mask"`
 }
 
-func printArpCache(a []*ArpCache) {
+func printLongArpCache(a []*ArpCache) {
 	fmt.Println("Arp Cache:")
 	for _, arp := range a {
 		fmt.Printf("Address: %s\n", arp.Addr)
@@ -56,7 +76,7 @@ type CurrentRam struct {
 	Available float64 `json:"available"`
 }
 
-func printCurrentRam(c *CurrentRam) {
+func printLongCurrentRam(c *CurrentRam) {
 	fmt.Println("Current Ram:")
 	fmt.Printf("Total: %.2fMB\n", c.Total)
 	fmt.Printf("Used: %.2fMB\n", c.Used)
@@ -72,7 +92,7 @@ type DiskPartitions struct {
 	Mounted     string `json:"mounted"`
 }
 
-func printDiskPartitions(d []*DiskPartitions) {
+func printLongDiskPartitions(d []*DiskPartitions) {
 	fmt.Println("Disk Partitions:")
 	for _, partition := range d {
 		fmt.Printf("Filesystem: %s\n", partition.FileSystem)
@@ -92,11 +112,32 @@ type GeneralInfo struct {
 	ServerTime string `json:"server_time"`
 }
 
-func printGeneralInfo(g *GeneralInfo) {
+func printLongGeneralInfo(g *GeneralInfo) {
 	fmt.Println("General Info:")
 	fmt.Printf("OS: %s\n", g.OS)
 	fmt.Printf("Kernel: %s\n", g.Kernel)
 	fmt.Printf("Hostname: %s\n", g.Hostname)
 	fmt.Printf("Uptime: %s\n", g.Uptime)
 	fmt.Printf("Server Time: %s\n", g.ServerTime)
+}
+
+type NeedsUpgrade struct {
+	Package   string `json:"package"`
+	Installed string `json:"installed"`
+	Available string `json:"available"`
+}
+
+func printShortNeedsUpgrade(u []*NeedsUpgrade) {
+	fmt.Println("Upgrades Available:")
+	fmt.Printf("Total: %d\n", len(u))
+}
+
+func printLongNeedsUpgrade(u []*NeedsUpgrade) {
+	fmt.Println("Upgrades Available:")
+	fmt.Printf("Total: %d\n\n", len(u))
+	for _, p := range u {
+		fmt.Printf("Package: %s\n", p.Package)
+		fmt.Printf("Installed: %s\n", p.Installed)
+		fmt.Printf("Available: %s\n\n", p.Available)
+	}
 }

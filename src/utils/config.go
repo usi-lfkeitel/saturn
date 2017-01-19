@@ -21,6 +21,8 @@ type Config struct {
 		KeepTempFiles bool
 	}
 	SSH struct {
+		Username   string
+		Password   string
 		PrivateKey string
 	}
 	Hosts    []*ConfigHost
@@ -90,6 +92,11 @@ func NewConfig(configFile string) (conf *Config, err error) {
 	if err := toml.Unmarshal(buf, &con); err != nil {
 		return nil, err
 	}
+
+	if len(con.Hosts) == 0 {
+		return nil, errors.New("No hosts defined")
+	}
+
 	con.sourceFile = configFile
 
 	con.HostsMap = make(map[string]*ConfigHost)
@@ -100,7 +107,34 @@ func NewConfig(configFile string) (conf *Config, err error) {
 		con.HostsMap[host.Name] = host
 	}
 
-	return &con, nil
+	return setConfigDefaults(&con)
+}
+
+func setConfigDefaults(c *Config) (*Config, error) {
+	// Anything not set here implies its zero value is the default
+
+	c.Core.TempDir = setStringOrDefault(c.Core.TempDir, "./tmp")
+	c.Core.ModuleDir = setStringOrDefault(c.Core.ModuleDir, "./modules")
+	c.Core.RemoteBaseDir = setStringOrDefault(c.Core.RemoteBaseDir, "$HOME")
+
+	c.SSH.Username = setStringOrDefault(c.SSH.Username, "root")
+	return c, nil
+}
+
+// Given string s, if it is empty, return v else return s.
+func setStringOrDefault(s, v string) string {
+	if s == "" {
+		return v
+	}
+	return s
+}
+
+// Given integer s, if it is 0, return v else return s.
+func setIntOrDefault(s, v int) int {
+	if s == 0 {
+		return v
+	}
+	return s
 }
 
 func FileExists(file string) bool {

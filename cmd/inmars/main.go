@@ -32,6 +32,7 @@ var (
 	moduleList   stringFlagList
 	configFile   string
 	outputMode   string
+	printShort   bool
 )
 
 const (
@@ -47,6 +48,8 @@ func init() {
 	flag.StringVar(&configFile, "c", "", "Configuration file location")
 
 	flag.StringVar(&outputMode, "o", "plain", "Output mode: plain, json")
+
+	flag.BoolVar(&printShort, "s", false, "Print short output")
 }
 
 func main() {
@@ -62,7 +65,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err := remote.LoadPrivateKey(config.SSH.PrivateKey); err != nil {
+	if err := remote.LoadPrivateKey(config); err != nil {
 		log.Println(err.Error())
 		os.Exit(1)
 	}
@@ -112,7 +115,7 @@ func printResults(resps []*utils.HostResponse) {
 	default:
 		for _, resp := range resps {
 			fmt.Printf("Stats for %s:\n\n", resp.Host.Address)
-			resp.Print()
+			resp.Print(printShort)
 		}
 	}
 }
