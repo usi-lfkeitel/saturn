@@ -34,6 +34,12 @@ var (
 	configFile   string
 	outputMode   string
 	printShort   bool
+	showVersion  bool
+
+	version   = ""
+	buildTime = ""
+	builder   = ""
+	goversion = ""
 )
 
 const (
@@ -51,10 +57,17 @@ func init() {
 	flag.StringVar(&outputMode, "o", "plain", "Output mode: plain, json")
 
 	flag.BoolVar(&printShort, "s", false, "Print short output")
+
+	flag.BoolVar(&showVersion, "v", false, "Print version information")
 }
 
 func main() {
 	flag.Parse()
+
+	if showVersion {
+		displayVersionInfo()
+		return
+	}
 
 	if configFile == "" {
 		configFile = utils.FindConfigFile()
@@ -119,4 +132,15 @@ func printResults(resps []*utils.HostResponse) {
 			resp.Print(printShort)
 		}
 	}
+}
+
+func displayVersionInfo() {
+	fmt.Printf(`INMars - (C) 2016 University of Southern Indiana - Lee Keitel
+
+Model:       CLI Client
+Version:     %s
+Built:       %s
+Compiled by: %s
+Go version:  %s
+`, version, buildTime, builder, goversion)
 }
