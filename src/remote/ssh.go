@@ -76,7 +76,7 @@ func UploadScript(config *utils.Config, hosts map[string]*utils.ConfigHost, genF
 		}
 
 		if err := uploadRemoteScript(config, host, f, s); err != nil {
-			fmt.Println(err.Error())
+			return err
 		}
 	}
 
@@ -140,6 +140,10 @@ func ExecuteScript(config *utils.Config, hosts map[string]*utils.ConfigHost, fil
 
 		if stderrBuf.Len() > 0 {
 			log.Println(stderrBuf.String())
+		}
+
+		if config.Core.Debug {
+			fmt.Println(stdoutBuf.String())
 		}
 
 		var response utils.HostResponse

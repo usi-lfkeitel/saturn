@@ -1,5 +1,5 @@
 #!/bin/bash
-#gen:module o os:string,kernel:string,hostname:string,uptime:string,server_time:string
+#gen:module o os:string,kernel:string,hostname:string,uptime:string,server_time:string,path:string
 
 function displaytime {
   local T=$1
@@ -20,4 +20,4 @@ hostname=$(/bin/hostname)
 uptime_seconds=$(/bin/cat /proc/uptime | awk '{print $1}')
 server_time=$(date)
 
-echo -n "{\"os\":\"$distro\",\"kernel\":\"$uname\",\"hostname\":\"$hostname\",\"uptime\":\"$(displaytime ${uptime_seconds%.*})\",\"server_time\":\"$server_time\"}"
+echo -n "{\"os\":\"$distro\",\"kernel\":\"$uname\",\"hostname\":\"$hostname\",\"uptime\":\"$(displaytime ${uptime_seconds%.*})\",\"server_time\":\"$server_time\",\"path\":\"$PATH\"}"

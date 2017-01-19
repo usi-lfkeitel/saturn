@@ -15,6 +15,7 @@ import (
 type Config struct {
 	sourceFile string
 	Core       struct {
+		Debug         bool
 		TempDir       string
 		ModuleDir     string
 		RemoteBaseDir string

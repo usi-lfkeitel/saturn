@@ -35,6 +35,7 @@ var (
 	outputMode   string
 	printShort   bool
 	showVersion  bool
+	debug        bool
 
 	version   = ""
 	buildTime = ""
@@ -59,6 +60,8 @@ func init() {
 	flag.BoolVar(&printShort, "s", false, "Print short output")
 
 	flag.BoolVar(&showVersion, "v", false, "Print version information")
+
+	flag.BoolVar(&debug, "d", false, "Enable debug mode")
 }
 
 func main() {
@@ -78,6 +81,8 @@ func main() {
 		log.Println(err.Error())
 		os.Exit(1)
 	}
+
+	config.Core.Debug = debug
 
 	if err := remote.LoadPrivateKey(config); err != nil {
 		log.Println(err.Error())

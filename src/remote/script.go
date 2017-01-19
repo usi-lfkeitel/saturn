@@ -1,7 +1,6 @@
 package remote
 
 import (
-	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -59,11 +58,6 @@ main() {
 
 	for _, module := range modules {
 		moduleFile := filepath.Join(modulesDir, module+".sh")
-
-		if !utils.FileExists(moduleFile) {
-			fmt.Printf("Module %s not found\n", module)
-			continue
-		}
 
 		m, err := getBinData(moduleFile)
 		if err != nil {

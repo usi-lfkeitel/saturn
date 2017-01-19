@@ -244,6 +244,7 @@ type GeneralInfo struct {
 	Hostname string `json:"hostname"`
 	Uptime string `json:"uptime"`
 	ServerTime string `json:"server_time"`
+	Path string `json:"path"`
 }
 
 func printLongGeneralInfo(a *GeneralInfo) {
@@ -253,6 +254,7 @@ func printLongGeneralInfo(a *GeneralInfo) {
 	fmt.Printf("Hostname: %s\n", a.Hostname)
 	fmt.Printf("Uptime: %s\n", a.Uptime)
 	fmt.Printf("Server Time: %s\n", a.ServerTime)
+	fmt.Printf("Path: %s\n", a.Path)
 }
 
 type IoStats struct {
