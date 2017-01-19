@@ -47,6 +47,9 @@ lint:
 vet:
 	@go vet $$(go list ./src/...)
 
+generate:
+	go generate ./cmd/saturn/main.go
+
 saturn:
 	GOBIN=$(PWD)/bin go install -v -ldflags "$(LDFLAGS)" -tags '$(BUILDTAGS)' ./cmd/saturn
 
