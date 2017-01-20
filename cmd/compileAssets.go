@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bytes"
+	"compress/gzip"
 	"flag"
 	"fmt"
 	"io"
@@ -64,11 +66,13 @@ func main() {
 }
 
 func writeHeader(w io.Writer) error {
-	_, err := w.Write([]byte(fmt.Sprintf(`
-package %s
+	_, err := w.Write([]byte(fmt.Sprintf(`package %s
 
 import (
+	"bytes"
+	"compress/gzip"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"path"
 )
@@ -90,7 +94,15 @@ func getBinData(name string) ([]byte, error) {
 	if _, ok := _binData[name]; !ok {
 		return nil, fmt.Errorf("Static asset with name %s doesn't exist", name)
 	}
-	return _binData[name], nil
+
+	var uncompressed bytes.Buffer
+	compressed := bytes.NewBuffer(_binData[name])
+
+	gz, _ := gzip.NewReader(compressed)
+	io.Copy(&uncompressed, gz)
+	gz.Close()
+
+	return uncompressed.Bytes(), nil
 }
 
 func getLocalData(name string) ([]byte, error) {
@@ -115,8 +127,14 @@ func writeData(w io.Writer) error {
 		if err != nil {
 			return err
 		}
+
+		var compressed bytes.Buffer
+		gz := gzip.NewWriter(&compressed)
+		gz.Write(data)
+		gz.Close()
+
 		assetPath, _ := filepath.Rel(relativeTo, filename)
-		fmt.Fprintf(w, `"%s": %#v,%s`, assetPath, data, "\n")
+		fmt.Fprintf(w, `"%s": %#v,%s`, assetPath, compressed.Bytes(), "\n")
 	}
 
 	fmt.Fprintln(w, "}")
