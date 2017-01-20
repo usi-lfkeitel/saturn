@@ -183,12 +183,16 @@ func writeArrayPrint(w io.Writer, mod *module) {
 	fancyName := displayName(mod.name)
 
 	fmt.Fprintf(w, `func printLong%s(a []*%s) {
-	fmt.Println("%s:")
+	fmt.Println("    %s:")
 	for _, o := range a {
 `, srcName, srcName, fancyName)
 
 	for _, key := range mod.keys {
-		fmt.Fprintf(w, "		fmt.Printf(\"%s: %s%s\\n\", o.%s)\n",
+		if key.suffix == "%" {
+			key.suffix = "%%"
+		}
+
+		fmt.Fprintf(w, "		fmt.Printf(\"        %s: %s%s\\n\", o.%s)\n",
 			displayName(key.name),
 			fmtType(key.jsonType),
 			key.suffix,
@@ -204,11 +208,15 @@ func writeObjPrint(w io.Writer, mod *module) {
 	fancyName := displayName(mod.name)
 
 	fmt.Fprintf(w, `func printLong%s(a *%s) {
-	fmt.Println("%s:")
+	fmt.Println("    %s:")
 `, srcName, srcName, fancyName)
 
 	for _, key := range mod.keys {
-		fmt.Fprintf(w, "	fmt.Printf(\"%s: %s%s\\n\", a.%s)\n",
+		if key.suffix == "%" {
+			key.suffix = "%%"
+		}
+
+		fmt.Fprintf(w, "	fmt.Printf(\"        %s: %s%s\\n\", a.%s)\n",
 			displayName(key.name),
 			fmtType(key.jsonType),
 			key.suffix,

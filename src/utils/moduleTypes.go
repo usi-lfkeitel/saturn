@@ -12,12 +12,12 @@ type ArpCache struct {
 }
 
 func printLongArpCache(a []*ArpCache) {
-	fmt.Println("Arp Cache:")
+	fmt.Println("    Arp Cache:")
 	for _, o := range a {
-		fmt.Printf("Addr: %s\n", o.Addr)
-		fmt.Printf("Hw Type: %s\n", o.HwType)
-		fmt.Printf("Hw Addr: %s\n", o.HwAddr)
-		fmt.Printf("Mask: %s\n", o.Mask)
+		fmt.Printf("        Addr: %s\n", o.Addr)
+		fmt.Printf("        Hw Type: %s\n", o.HwType)
+		fmt.Printf("        Hw Addr: %s\n", o.HwAddr)
+		fmt.Printf("        Mask: %s\n", o.Mask)
 		fmt.Println("")
 	}
 }
@@ -29,11 +29,11 @@ type Bandwidth struct {
 }
 
 func printLongBandwidth(a []*Bandwidth) {
-	fmt.Println("Bandwidth:")
+	fmt.Println("    Bandwidth:")
 	for _, o := range a {
-		fmt.Printf("Interface: %s\n", o.Interface)
-		fmt.Printf("Tx: %d\n", o.Tx)
-		fmt.Printf("Rx: %d\n", o.Rx)
+		fmt.Printf("        Interface: %s\n", o.Interface)
+		fmt.Printf("        Tx: %d\n", o.Tx)
+		fmt.Printf("        Rx: %d\n", o.Rx)
 		fmt.Println("")
 	}
 }
@@ -45,11 +45,11 @@ type CommonApplications struct {
 }
 
 func printLongCommonApplications(a []*CommonApplications) {
-	fmt.Println("Common Applications:")
+	fmt.Println("    Common Applications:")
 	for _, o := range a {
-		fmt.Printf("Binary: %s\n", o.Binary)
-		fmt.Printf("Location: %s\n", o.Location)
-		fmt.Printf("Installed: %t\n", o.Installed)
+		fmt.Printf("        Binary: %s\n", o.Binary)
+		fmt.Printf("        Location: %s\n", o.Location)
+		fmt.Printf("        Installed: %t\n", o.Installed)
 		fmt.Println("")
 	}
 }
@@ -83,32 +83,32 @@ type CpuInfo struct {
 }
 
 func printLongCpuInfo(a *CpuInfo) {
-	fmt.Println("Cpu Info:")
-	fmt.Printf("Architecture: %s\n", a.Architecture)
-	fmt.Printf("CPU Op-Mode(S): %s\n", a.CPUOpModeS)
-	fmt.Printf("Byte Order: %s\n", a.ByteOrder)
-	fmt.Printf("CPU(S): %s\n", a.CPUS)
-	fmt.Printf("On-Line CPU(S) List: %s\n", a.OnLineCPUSList)
-	fmt.Printf("Thread(S) Per Core: %s\n", a.ThreadSPerCore)
-	fmt.Printf("Core(S) Per Socket: %s\n", a.CoreSPerSocket)
-	fmt.Printf("Socket(S): %s\n", a.SocketS)
-	fmt.Printf("NUMA Node(S): %s\n", a.NUMANodeS)
-	fmt.Printf("Vendor ID: %s\n", a.VendorID)
-	fmt.Printf("CPU Family: %s\n", a.CPUFamily)
-	fmt.Printf("Model: %s\n", a.Model)
-	fmt.Printf("Model Name: %s\n", a.ModelName)
-	fmt.Printf("Stepping: %s\n", a.Stepping)
-	fmt.Printf("CPU MHz: %s\n", a.CPUMHz)
-	fmt.Printf("CPU Max MHz: %s\n", a.CPUMaxMHz)
-	fmt.Printf("CPU Min MHz: %s\n", a.CPUMinMHz)
-	fmt.Printf("BogoMIPS: %s\n", a.BogoMIPS)
-	fmt.Printf("Virtualization: %s\n", a.Virtualization)
-	fmt.Printf("L1d Cache: %s\n", a.L1dCache)
-	fmt.Printf("L1i Cache: %s\n", a.L1iCache)
-	fmt.Printf("L2 Cache: %s\n", a.L2Cache)
-	fmt.Printf("L3 Cache: %s\n", a.L3Cache)
-	fmt.Printf("NUMA Node0 CPU(S): %s\n", a.NUMANode0CPUS)
-	fmt.Printf("Flags: %s\n", a.Flags)
+	fmt.Println("    Cpu Info:")
+	fmt.Printf("        Architecture: %s\n", a.Architecture)
+	fmt.Printf("        CPU Op-Mode(S): %s\n", a.CPUOpModeS)
+	fmt.Printf("        Byte Order: %s\n", a.ByteOrder)
+	fmt.Printf("        CPU(S): %s\n", a.CPUS)
+	fmt.Printf("        On-Line CPU(S) List: %s\n", a.OnLineCPUSList)
+	fmt.Printf("        Thread(S) Per Core: %s\n", a.ThreadSPerCore)
+	fmt.Printf("        Core(S) Per Socket: %s\n", a.CoreSPerSocket)
+	fmt.Printf("        Socket(S): %s\n", a.SocketS)
+	fmt.Printf("        NUMA Node(S): %s\n", a.NUMANodeS)
+	fmt.Printf("        Vendor ID: %s\n", a.VendorID)
+	fmt.Printf("        CPU Family: %s\n", a.CPUFamily)
+	fmt.Printf("        Model: %s\n", a.Model)
+	fmt.Printf("        Model Name: %s\n", a.ModelName)
+	fmt.Printf("        Stepping: %s\n", a.Stepping)
+	fmt.Printf("        CPU MHz: %s\n", a.CPUMHz)
+	fmt.Printf("        CPU Max MHz: %s\n", a.CPUMaxMHz)
+	fmt.Printf("        CPU Min MHz: %s\n", a.CPUMinMHz)
+	fmt.Printf("        BogoMIPS: %s\n", a.BogoMIPS)
+	fmt.Printf("        Virtualization: %s\n", a.Virtualization)
+	fmt.Printf("        L1d Cache: %s\n", a.L1dCache)
+	fmt.Printf("        L1i Cache: %s\n", a.L1iCache)
+	fmt.Printf("        L2 Cache: %s\n", a.L2Cache)
+	fmt.Printf("        L3 Cache: %s\n", a.L3Cache)
+	fmt.Printf("        NUMA Node0 CPU(S): %s\n", a.NUMANode0CPUS)
+	fmt.Printf("        Flags: %s\n", a.Flags)
 }
 
 type CpuIntensiveProcesses struct {
@@ -121,14 +121,14 @@ type CpuIntensiveProcesses struct {
 }
 
 func printLongCpuIntensiveProcesses(a []*CpuIntensiveProcesses) {
-	fmt.Println("Cpu Intensive Processes:")
+	fmt.Println("    Cpu Intensive Processes:")
 	for _, o := range a {
-		fmt.Printf("Pid: %d\n", o.Pid)
-		fmt.Printf("User: %s\n", o.User)
-		fmt.Printf("Cpu Percent: %.2f\n", o.CpuPercent)
-		fmt.Printf("Rss: %d\n", o.Rss)
-		fmt.Printf("Vsz: %d\n", o.Vsz)
-		fmt.Printf("Cmd: %s\n", o.Cmd)
+		fmt.Printf("        Pid: %d\n", o.Pid)
+		fmt.Printf("        User: %s\n", o.User)
+		fmt.Printf("        Cpu Percent: %.2f\n", o.CpuPercent)
+		fmt.Printf("        Rss: %d\n", o.Rss)
+		fmt.Printf("        Vsz: %d\n", o.Vsz)
+		fmt.Printf("        Cmd: %s\n", o.Cmd)
 		fmt.Println("")
 	}
 }
@@ -138,8 +138,8 @@ type CpuTemp struct {
 }
 
 func printLongCpuTemp(a *CpuTemp) {
-	fmt.Println("Cpu Temp:")
-	fmt.Printf("Temp: %.2f\n", a.Temp)
+	fmt.Println("    Cpu Temp:")
+	fmt.Printf("        Temp: %.2f\n", a.Temp)
 }
 
 type CpuUtilization struct {
@@ -147,8 +147,8 @@ type CpuUtilization struct {
 }
 
 func printLongCpuUtilization(a *CpuUtilization) {
-	fmt.Println("Cpu Utilization:")
-	fmt.Printf("Util: %d\n", a.Util)
+	fmt.Println("    Cpu Utilization:")
+	fmt.Printf("        Util: %d\n", a.Util)
 }
 
 type CronHistory struct {
@@ -158,11 +158,11 @@ type CronHistory struct {
 }
 
 func printLongCronHistory(a []*CronHistory) {
-	fmt.Println("Cron History:")
+	fmt.Println("    Cron History:")
 	for _, o := range a {
-		fmt.Printf("Time: %s\n", o.Time)
-		fmt.Printf("User: %s\n", o.User)
-		fmt.Printf("Message: %s\n", o.Message)
+		fmt.Printf("        Time: %s\n", o.Time)
+		fmt.Printf("        User: %s\n", o.User)
+		fmt.Printf("        Message: %s\n", o.Message)
 		fmt.Println("")
 	}
 }
@@ -174,10 +174,10 @@ type CurrentRam struct {
 }
 
 func printLongCurrentRam(a *CurrentRam) {
-	fmt.Println("Current Ram:")
-	fmt.Printf("Total: %.2fMB\n", a.Total)
-	fmt.Printf("Used: %.2fMB\n", a.Used)
-	fmt.Printf("Available: %.2fMB\n", a.Available)
+	fmt.Println("    Current Ram:")
+	fmt.Printf("        Total: %.2fMB\n", a.Total)
+	fmt.Printf("        Used: %.2fMB\n", a.Used)
+	fmt.Printf("        Available: %.2fMB\n", a.Available)
 }
 
 type DiskPartitions struct {
@@ -185,19 +185,19 @@ type DiskPartitions struct {
 	Size string `json:"size"`
 	Used string `json:"used"`
 	Avail string `json:"avail"`
-	UsedPercent string `json:"used_percent"`
+	UsedPercent int `json:"used_percent"`
 	Mounted string `json:"mounted"`
 }
 
 func printLongDiskPartitions(a []*DiskPartitions) {
-	fmt.Println("Disk Partitions:")
+	fmt.Println("    Disk Partitions:")
 	for _, o := range a {
-		fmt.Printf("File System: %s\n", o.FileSystem)
-		fmt.Printf("Size: %s\n", o.Size)
-		fmt.Printf("Used: %s\n", o.Used)
-		fmt.Printf("Avail: %s\n", o.Avail)
-		fmt.Printf("Used Percent: %s\n", o.UsedPercent)
-		fmt.Printf("Mounted: %s\n", o.Mounted)
+		fmt.Printf("        File System: %s\n", o.FileSystem)
+		fmt.Printf("        Size: %s\n", o.Size)
+		fmt.Printf("        Used: %s\n", o.Used)
+		fmt.Printf("        Avail: %s\n", o.Avail)
+		fmt.Printf("        Used Percent: %d%%\n", o.UsedPercent)
+		fmt.Printf("        Mounted: %s\n", o.Mounted)
 		fmt.Println("")
 	}
 }
@@ -212,14 +212,14 @@ type DockerProcesses struct {
 }
 
 func printLongDockerProcesses(a []*DockerProcesses) {
-	fmt.Println("Docker Processes:")
+	fmt.Println("    Docker Processes:")
 	for _, o := range a {
-		fmt.Printf("Cname: %s\n", o.Cname)
-		fmt.Printf("Pid: %d\n", o.Pid)
-		fmt.Printf("User: %s\n", o.User)
-		fmt.Printf("Cpu Percent: %.2f\n", o.CpuPercent)
-		fmt.Printf("Mem Percent: %.2f\n", o.MemPercent)
-		fmt.Printf("Cmd: %s\n", o.Cmd)
+		fmt.Printf("        Cname: %s\n", o.Cname)
+		fmt.Printf("        Pid: %d\n", o.Pid)
+		fmt.Printf("        User: %s\n", o.User)
+		fmt.Printf("        Cpu Percent: %.2f\n", o.CpuPercent)
+		fmt.Printf("        Mem Percent: %.2f\n", o.MemPercent)
+		fmt.Printf("        Cmd: %s\n", o.Cmd)
 		fmt.Println("")
 	}
 }
@@ -230,10 +230,10 @@ type DownloadTransferRate struct {
 }
 
 func printLongDownloadTransferRate(a []*DownloadTransferRate) {
-	fmt.Println("Download Transfer Rate:")
+	fmt.Println("    Download Transfer Rate:")
 	for _, o := range a {
-		fmt.Printf("Interface: %s\n", o.Interface)
-		fmt.Printf("Transfer Rate: %d\n", o.TransferRate)
+		fmt.Printf("        Interface: %s\n", o.Interface)
+		fmt.Printf("        Transfer Rate: %d\n", o.TransferRate)
 		fmt.Println("")
 	}
 }
@@ -248,13 +248,13 @@ type GeneralInfo struct {
 }
 
 func printLongGeneralInfo(a *GeneralInfo) {
-	fmt.Println("General Info:")
-	fmt.Printf("Os: %s\n", a.Os)
-	fmt.Printf("Kernel: %s\n", a.Kernel)
-	fmt.Printf("Hostname: %s\n", a.Hostname)
-	fmt.Printf("Uptime: %s\n", a.Uptime)
-	fmt.Printf("Server Time: %s\n", a.ServerTime)
-	fmt.Printf("Path: %s\n", a.Path)
+	fmt.Println("    General Info:")
+	fmt.Printf("        Os: %s\n", a.Os)
+	fmt.Printf("        Kernel: %s\n", a.Kernel)
+	fmt.Printf("        Hostname: %s\n", a.Hostname)
+	fmt.Printf("        Uptime: %s\n", a.Uptime)
+	fmt.Printf("        Server Time: %s\n", a.ServerTime)
+	fmt.Printf("        Path: %s\n", a.Path)
 }
 
 type IoStats struct {
@@ -266,27 +266,13 @@ type IoStats struct {
 }
 
 func printLongIoStats(a []*IoStats) {
-	fmt.Println("Io Stats:")
+	fmt.Println("    Io Stats:")
 	for _, o := range a {
-		fmt.Printf("Device: %s\n", o.Device)
-		fmt.Printf("Reads: %d\n", o.Reads)
-		fmt.Printf("Writes: %d\n", o.Writes)
-		fmt.Printf("In Prog: %d\n", o.InProg)
-		fmt.Printf("Time: %d\n", o.Time)
-		fmt.Println("")
-	}
-}
-
-type IpAddresses struct {
-	Interface string `json:"interface"`
-	Ip string `json:"ip"`
-}
-
-func printLongIpAddresses(a []*IpAddresses) {
-	fmt.Println("Ip Addresses:")
-	for _, o := range a {
-		fmt.Printf("Interface: %s\n", o.Interface)
-		fmt.Printf("Ip: %s\n", o.Ip)
+		fmt.Printf("        Device: %s\n", o.Device)
+		fmt.Printf("        Reads: %d\n", o.Reads)
+		fmt.Printf("        Writes: %d\n", o.Writes)
+		fmt.Printf("        In Prog: %d\n", o.InProg)
+		fmt.Printf("        Time: %d\n", o.Time)
 		fmt.Println("")
 	}
 }
@@ -298,10 +284,10 @@ type LoadAvg struct {
 }
 
 func printLongLoadAvg(a *LoadAvg) {
-	fmt.Println("Load Avg:")
-	fmt.Printf("Avg 1 Min: %d\n", a.Avg1Min)
-	fmt.Printf("Avg 5 Min: %d\n", a.Avg5Min)
-	fmt.Printf("Avg 15 Min: %d\n", a.Avg15Min)
+	fmt.Println("    Load Avg:")
+	fmt.Printf("        Avg 1 Min: %d\n", a.Avg1Min)
+	fmt.Printf("        Avg 5 Min: %d\n", a.Avg5Min)
+	fmt.Printf("        Avg 15 Min: %d\n", a.Avg15Min)
 }
 
 type LoggedInUsers struct {
@@ -311,11 +297,11 @@ type LoggedInUsers struct {
 }
 
 func printLongLoggedInUsers(a []*LoggedInUsers) {
-	fmt.Println("Logged In Users:")
+	fmt.Println("    Logged In Users:")
 	for _, o := range a {
-		fmt.Printf("User: %s\n", o.User)
-		fmt.Printf("From: %s\n", o.From)
-		fmt.Printf("When: %s\n", o.When)
+		fmt.Printf("        User: %s\n", o.User)
+		fmt.Printf("        From: %s\n", o.From)
+		fmt.Printf("        When: %s\n", o.When)
 		fmt.Println("")
 	}
 }
@@ -327,10 +313,10 @@ type Memcached struct {
 }
 
 func printLongMemcached(a *Memcached) {
-	fmt.Println("Memcached:")
-	fmt.Printf("Bytes: %d\n", a.Bytes)
-	fmt.Printf("Bytes Read: %d\n", a.BytesRead)
-	fmt.Printf("Bytes Written: %d\n", a.BytesWritten)
+	fmt.Println("    Memcached:")
+	fmt.Printf("        Bytes: %d\n", a.Bytes)
+	fmt.Printf("        Bytes Read: %d\n", a.BytesRead)
+	fmt.Printf("        Bytes Written: %d\n", a.BytesWritten)
 }
 
 type MemoryInfo struct {
@@ -383,53 +369,53 @@ type MemoryInfo struct {
 }
 
 func printLongMemoryInfo(a *MemoryInfo) {
-	fmt.Println("Memory Info:")
-	fmt.Printf("MemTotal: %s\n", a.MemTotal)
-	fmt.Printf("MemFree: %s\n", a.MemFree)
-	fmt.Printf("MemAvailable: %s\n", a.MemAvailable)
-	fmt.Printf("Buffers: %s\n", a.Buffers)
-	fmt.Printf("Cached: %s\n", a.Cached)
-	fmt.Printf("SwapCached: %s\n", a.SwapCached)
-	fmt.Printf("Active: %s\n", a.Active)
-	fmt.Printf("Inactive: %s\n", a.Inactive)
-	fmt.Printf("Active(Anon): %s\n", a.ActiveAnon)
-	fmt.Printf("Inactive(Anon): %s\n", a.InactiveAnon)
-	fmt.Printf("Active(File): %s\n", a.ActiveFile)
-	fmt.Printf("Inactive(File): %s\n", a.InactiveFile)
-	fmt.Printf("Unevictable: %s\n", a.Unevictable)
-	fmt.Printf("Mlocked: %s\n", a.Mlocked)
-	fmt.Printf("SwapTotal: %s\n", a.SwapTotal)
-	fmt.Printf("SwapFree: %s\n", a.SwapFree)
-	fmt.Printf("Dirty: %s\n", a.Dirty)
-	fmt.Printf("Writeback: %s\n", a.Writeback)
-	fmt.Printf("AnonPages: %s\n", a.AnonPages)
-	fmt.Printf("Mapped: %s\n", a.Mapped)
-	fmt.Printf("Shmem: %s\n", a.Shmem)
-	fmt.Printf("Slab: %s\n", a.Slab)
-	fmt.Printf("SReclaimable: %s\n", a.SReclaimable)
-	fmt.Printf("SUnreclaim: %s\n", a.SUnreclaim)
-	fmt.Printf("KernelStack: %s\n", a.KernelStack)
-	fmt.Printf("PageTables: %s\n", a.PageTables)
-	fmt.Printf("NFS Unstable: %s\n", a.NFSUnstable)
-	fmt.Printf("Bounce: %s\n", a.Bounce)
-	fmt.Printf("WritebackTmp: %s\n", a.WritebackTmp)
-	fmt.Printf("CommitLimit: %s\n", a.CommitLimit)
-	fmt.Printf("Committed AS: %s\n", a.CommittedAS)
-	fmt.Printf("VmallocTotal: %s\n", a.VmallocTotal)
-	fmt.Printf("VmallocUsed: %s\n", a.VmallocUsed)
-	fmt.Printf("VmallocChunk: %s\n", a.VmallocChunk)
-	fmt.Printf("HardwareCorrupted: %s\n", a.HardwareCorrupted)
-	fmt.Printf("AnonHugePages: %s\n", a.AnonHugePages)
-	fmt.Printf("CmaTotal: %s\n", a.CmaTotal)
-	fmt.Printf("CmaFree: %s\n", a.CmaFree)
-	fmt.Printf("HugePages Total: %s\n", a.HugePagesTotal)
-	fmt.Printf("HugePages Free: %s\n", a.HugePagesFree)
-	fmt.Printf("HugePages Rsvd: %s\n", a.HugePagesRsvd)
-	fmt.Printf("HugePages Surp: %s\n", a.HugePagesSurp)
-	fmt.Printf("Hugepagesize: %s\n", a.Hugepagesize)
-	fmt.Printf("DirectMap4k: %s\n", a.DirectMap4k)
-	fmt.Printf("DirectMap2M: %s\n", a.DirectMap2M)
-	fmt.Printf("DirectMap1G: %s\n", a.DirectMap1G)
+	fmt.Println("    Memory Info:")
+	fmt.Printf("        MemTotal: %s\n", a.MemTotal)
+	fmt.Printf("        MemFree: %s\n", a.MemFree)
+	fmt.Printf("        MemAvailable: %s\n", a.MemAvailable)
+	fmt.Printf("        Buffers: %s\n", a.Buffers)
+	fmt.Printf("        Cached: %s\n", a.Cached)
+	fmt.Printf("        SwapCached: %s\n", a.SwapCached)
+	fmt.Printf("        Active: %s\n", a.Active)
+	fmt.Printf("        Inactive: %s\n", a.Inactive)
+	fmt.Printf("        Active(Anon): %s\n", a.ActiveAnon)
+	fmt.Printf("        Inactive(Anon): %s\n", a.InactiveAnon)
+	fmt.Printf("        Active(File): %s\n", a.ActiveFile)
+	fmt.Printf("        Inactive(File): %s\n", a.InactiveFile)
+	fmt.Printf("        Unevictable: %s\n", a.Unevictable)
+	fmt.Printf("        Mlocked: %s\n", a.Mlocked)
+	fmt.Printf("        SwapTotal: %s\n", a.SwapTotal)
+	fmt.Printf("        SwapFree: %s\n", a.SwapFree)
+	fmt.Printf("        Dirty: %s\n", a.Dirty)
+	fmt.Printf("        Writeback: %s\n", a.Writeback)
+	fmt.Printf("        AnonPages: %s\n", a.AnonPages)
+	fmt.Printf("        Mapped: %s\n", a.Mapped)
+	fmt.Printf("        Shmem: %s\n", a.Shmem)
+	fmt.Printf("        Slab: %s\n", a.Slab)
+	fmt.Printf("        SReclaimable: %s\n", a.SReclaimable)
+	fmt.Printf("        SUnreclaim: %s\n", a.SUnreclaim)
+	fmt.Printf("        KernelStack: %s\n", a.KernelStack)
+	fmt.Printf("        PageTables: %s\n", a.PageTables)
+	fmt.Printf("        NFS Unstable: %s\n", a.NFSUnstable)
+	fmt.Printf("        Bounce: %s\n", a.Bounce)
+	fmt.Printf("        WritebackTmp: %s\n", a.WritebackTmp)
+	fmt.Printf("        CommitLimit: %s\n", a.CommitLimit)
+	fmt.Printf("        Committed AS: %s\n", a.CommittedAS)
+	fmt.Printf("        VmallocTotal: %s\n", a.VmallocTotal)
+	fmt.Printf("        VmallocUsed: %s\n", a.VmallocUsed)
+	fmt.Printf("        VmallocChunk: %s\n", a.VmallocChunk)
+	fmt.Printf("        HardwareCorrupted: %s\n", a.HardwareCorrupted)
+	fmt.Printf("        AnonHugePages: %s\n", a.AnonHugePages)
+	fmt.Printf("        CmaTotal: %s\n", a.CmaTotal)
+	fmt.Printf("        CmaFree: %s\n", a.CmaFree)
+	fmt.Printf("        HugePages Total: %s\n", a.HugePagesTotal)
+	fmt.Printf("        HugePages Free: %s\n", a.HugePagesFree)
+	fmt.Printf("        HugePages Rsvd: %s\n", a.HugePagesRsvd)
+	fmt.Printf("        HugePages Surp: %s\n", a.HugePagesSurp)
+	fmt.Printf("        Hugepagesize: %s\n", a.Hugepagesize)
+	fmt.Printf("        DirectMap4k: %s\n", a.DirectMap4k)
+	fmt.Printf("        DirectMap2M: %s\n", a.DirectMap2M)
+	fmt.Printf("        DirectMap1G: %s\n", a.DirectMap1G)
 }
 
 type NeedsUpgrades struct {
@@ -439,11 +425,11 @@ type NeedsUpgrades struct {
 }
 
 func printLongNeedsUpgrades(a []*NeedsUpgrades) {
-	fmt.Println("Needs Upgrades:")
+	fmt.Println("    Needs Upgrades:")
 	for _, o := range a {
-		fmt.Printf("Package: %s\n", o.Package)
-		fmt.Printf("Installed: %s\n", o.Installed)
-		fmt.Printf("Available: %s\n", o.Available)
+		fmt.Printf("        Package: %s\n", o.Package)
+		fmt.Printf("        Installed: %s\n", o.Installed)
+		fmt.Printf("        Available: %s\n", o.Available)
 		fmt.Println("")
 	}
 }
@@ -454,9 +440,23 @@ type NetworkConnections struct {
 }
 
 func printLongNetworkConnections(a *NetworkConnections) {
-	fmt.Println("Network Connections:")
-	fmt.Printf("Connections: %d\n", a.Connections)
-	fmt.Printf("Address: %s\n", a.Address)
+	fmt.Println("    Network Connections:")
+	fmt.Printf("        Connections: %d\n", a.Connections)
+	fmt.Printf("        Address: %s\n", a.Address)
+}
+
+type NetworkInterfaces struct {
+	Interface string `json:"interface"`
+	Ip string `json:"ip"`
+}
+
+func printLongNetworkInterfaces(a []*NetworkInterfaces) {
+	fmt.Println("    Network Interfaces:")
+	for _, o := range a {
+		fmt.Printf("        Interface: %s\n", o.Interface)
+		fmt.Printf("        Ip: %s\n", o.Ip)
+		fmt.Println("")
+	}
 }
 
 type NumberOfCpuCores struct {
@@ -464,8 +464,8 @@ type NumberOfCpuCores struct {
 }
 
 func printLongNumberOfCpuCores(a *NumberOfCpuCores) {
-	fmt.Println("Number Of Cpu Cores:")
-	fmt.Printf("Cores: %d\n", a.Cores)
+	fmt.Println("    Number Of Cpu Cores:")
+	fmt.Printf("        Cores: %d\n", a.Cores)
 }
 
 type Pm2Stats struct {
@@ -481,17 +481,17 @@ type Pm2Stats struct {
 }
 
 func printLongPm2Stats(a []*Pm2Stats) {
-	fmt.Println("Pm2 Stats:")
+	fmt.Println("    Pm2 Stats:")
 	for _, o := range a {
-		fmt.Printf("AppName: %s\n", o.AppName)
-		fmt.Printf("Id: %s\n", o.Id)
-		fmt.Printf("Mode: %s\n", o.Mode)
-		fmt.Printf("Pid: %s\n", o.Pid)
-		fmt.Printf("Status: %s\n", o.Status)
-		fmt.Printf("Restart: %s\n", o.Restart)
-		fmt.Printf("Uptime: %s\n", o.Uptime)
-		fmt.Printf("Memory: %s\n", o.Memory)
-		fmt.Printf("Watching: %s\n", o.Watching)
+		fmt.Printf("        AppName: %s\n", o.AppName)
+		fmt.Printf("        Id: %s\n", o.Id)
+		fmt.Printf("        Mode: %s\n", o.Mode)
+		fmt.Printf("        Pid: %s\n", o.Pid)
+		fmt.Printf("        Status: %s\n", o.Status)
+		fmt.Printf("        Restart: %s\n", o.Restart)
+		fmt.Printf("        Uptime: %s\n", o.Uptime)
+		fmt.Printf("        Memory: %s\n", o.Memory)
+		fmt.Printf("        Watching: %s\n", o.Watching)
 		fmt.Println("")
 	}
 }
@@ -506,14 +506,14 @@ type RamIntensiveProcesses struct {
 }
 
 func printLongRamIntensiveProcesses(a []*RamIntensiveProcesses) {
-	fmt.Println("Ram Intensive Processes:")
+	fmt.Println("    Ram Intensive Processes:")
 	for _, o := range a {
-		fmt.Printf("Pid: %d\n", o.Pid)
-		fmt.Printf("User: %s\n", o.User)
-		fmt.Printf("Mem Percent: %.2f\n", o.MemPercent)
-		fmt.Printf("Rss: %d\n", o.Rss)
-		fmt.Printf("Vsz: %d\n", o.Vsz)
-		fmt.Printf("Cmd: %s\n", o.Cmd)
+		fmt.Printf("        Pid: %d\n", o.Pid)
+		fmt.Printf("        User: %s\n", o.User)
+		fmt.Printf("        Mem Percent: %.2f\n", o.MemPercent)
+		fmt.Printf("        Rss: %d\n", o.Rss)
+		fmt.Printf("        Vsz: %d\n", o.Vsz)
+		fmt.Printf("        Cmd: %s\n", o.Cmd)
 		fmt.Println("")
 	}
 }
@@ -525,11 +525,11 @@ type RecentAccountLogins struct {
 }
 
 func printLongRecentAccountLogins(a []*RecentAccountLogins) {
-	fmt.Println("Recent Account Logins:")
+	fmt.Println("    Recent Account Logins:")
 	for _, o := range a {
-		fmt.Printf("User: %s\n", o.User)
-		fmt.Printf("Ip: %s\n", o.Ip)
-		fmt.Printf("Date: %s\n", o.Date)
+		fmt.Printf("        User: %s\n", o.User)
+		fmt.Printf("        Ip: %s\n", o.Ip)
+		fmt.Printf("        Date: %s\n", o.Date)
 		fmt.Println("")
 	}
 }
@@ -544,13 +544,13 @@ type Redis struct {
 }
 
 func printLongRedis(a *Redis) {
-	fmt.Println("Redis:")
-	fmt.Printf("Redis Version: %s\n", a.RedisVersion)
-	fmt.Printf("Connected Clients: %s\n", a.ConnectedClients)
-	fmt.Printf("Connected Slaves: %s\n", a.ConnectedSlaves)
-	fmt.Printf("Used Memory Human: %s\n", a.UsedMemoryHuman)
-	fmt.Printf("Total Connections Received: %s\n", a.TotalConnectionsReceived)
-	fmt.Printf("Total Commands Processed: %s\n", a.TotalCommandsProcessed)
+	fmt.Println("    Redis:")
+	fmt.Printf("        Redis Version: %s\n", a.RedisVersion)
+	fmt.Printf("        Connected Clients: %s\n", a.ConnectedClients)
+	fmt.Printf("        Connected Slaves: %s\n", a.ConnectedSlaves)
+	fmt.Printf("        Used Memory Human: %s\n", a.UsedMemoryHuman)
+	fmt.Printf("        Total Connections Received: %s\n", a.TotalConnectionsReceived)
+	fmt.Printf("        Total Commands Processed: %s\n", a.TotalCommandsProcessed)
 }
 
 type ScheduledCrons struct {
@@ -564,15 +564,15 @@ type ScheduledCrons struct {
 }
 
 func printLongScheduledCrons(a []*ScheduledCrons) {
-	fmt.Println("Scheduled Crons:")
+	fmt.Println("    Scheduled Crons:")
 	for _, o := range a {
-		fmt.Printf("Min: %s\n", o.Min)
-		fmt.Printf("Hrs: %s\n", o.Hrs)
-		fmt.Printf("Day: %s\n", o.Day)
-		fmt.Printf("Month: %s\n", o.Month)
-		fmt.Printf("Wkday: %s\n", o.Wkday)
-		fmt.Printf("User: %s\n", o.User)
-		fmt.Printf("Cmd: %s\n", o.Cmd)
+		fmt.Printf("        Min: %s\n", o.Min)
+		fmt.Printf("        Hrs: %s\n", o.Hrs)
+		fmt.Printf("        Day: %s\n", o.Day)
+		fmt.Printf("        Month: %s\n", o.Month)
+		fmt.Printf("        Wkday: %s\n", o.Wkday)
+		fmt.Printf("        User: %s\n", o.User)
+		fmt.Printf("        Cmd: %s\n", o.Cmd)
 		fmt.Println("")
 	}
 }
@@ -586,13 +586,13 @@ type Swap struct {
 }
 
 func printLongSwap(a []*Swap) {
-	fmt.Println("Swap:")
+	fmt.Println("    Swap:")
 	for _, o := range a {
-		fmt.Printf("Filename: %s\n", o.Filename)
-		fmt.Printf("Type: %s\n", o.Type)
-		fmt.Printf("Size: %s\n", o.Size)
-		fmt.Printf("Used: %s\n", o.Used)
-		fmt.Printf("Priority: %s\n", o.Priority)
+		fmt.Printf("        Filename: %s\n", o.Filename)
+		fmt.Printf("        Type: %s\n", o.Type)
+		fmt.Printf("        Size: %s\n", o.Size)
+		fmt.Printf("        Used: %s\n", o.Used)
+		fmt.Printf("        Priority: %s\n", o.Priority)
 		fmt.Println("")
 	}
 }
@@ -603,10 +603,10 @@ type UploadTransferRate struct {
 }
 
 func printLongUploadTransferRate(a []*UploadTransferRate) {
-	fmt.Println("Upload Transfer Rate:")
+	fmt.Println("    Upload Transfer Rate:")
 	for _, o := range a {
-		fmt.Printf("Interface: %s\n", o.Interface)
-		fmt.Printf("Transfer Rate: %d\n", o.TransferRate)
+		fmt.Printf("        Interface: %s\n", o.Interface)
+		fmt.Printf("        Transfer Rate: %d\n", o.TransferRate)
 		fmt.Println("")
 	}
 }
@@ -618,11 +618,11 @@ type UserAccounts struct {
 }
 
 func printLongUserAccounts(a []*UserAccounts) {
-	fmt.Println("User Accounts:")
+	fmt.Println("    User Accounts:")
 	for _, o := range a {
-		fmt.Printf("Type: %s\n", o.Type)
-		fmt.Printf("User: %s\n", o.User)
-		fmt.Printf("Home: %s\n", o.Home)
+		fmt.Printf("        Type: %s\n", o.Type)
+		fmt.Printf("        User: %s\n", o.User)
+		fmt.Printf("        Home: %s\n", o.Home)
 		fmt.Println("")
 	}
 }
@@ -643,13 +643,13 @@ type HostResponse struct {
 	DownloadTransferRate []*DownloadTransferRate `json:"download_transfer_rate,omitempty"`
 	GeneralInfo *GeneralInfo `json:"general_info,omitempty"`
 	IoStats []*IoStats `json:"io_stats,omitempty"`
-	IpAddresses []*IpAddresses `json:"ip_addresses,omitempty"`
 	LoadAvg *LoadAvg `json:"load_avg,omitempty"`
 	LoggedInUsers []*LoggedInUsers `json:"logged_in_users,omitempty"`
 	Memcached *Memcached `json:"memcached,omitempty"`
 	MemoryInfo *MemoryInfo `json:"memory_info,omitempty"`
 	NeedsUpgrades []*NeedsUpgrades `json:"needs_upgrades,omitempty"`
 	NetworkConnections *NetworkConnections `json:"network_connections,omitempty"`
+	NetworkInterfaces []*NetworkInterfaces `json:"network_interfaces,omitempty"`
 	NumberOfCpuCores *NumberOfCpuCores `json:"number_of_cpu_cores,omitempty"`
 	Pm2Stats []*Pm2Stats `json:"pm2_stats,omitempty"`
 	RamIntensiveProcesses []*RamIntensiveProcesses `json:"ram_intensive_processes,omitempty"`
@@ -734,10 +734,6 @@ func (r *HostResponse) printLong() {
 		printLongIoStats(r.IoStats)
 		fmt.Println("")
 	}
-	if len(r.IpAddresses) > 0 {
-		printLongIpAddresses(r.IpAddresses)
-		fmt.Println("")
-	}
 	if r.LoadAvg != nil {
 		printLongLoadAvg(r.LoadAvg)
 		fmt.Println("")
@@ -760,6 +756,10 @@ func (r *HostResponse) printLong() {
 	}
 	if r.NetworkConnections != nil {
 		printLongNetworkConnections(r.NetworkConnections)
+		fmt.Println("")
+	}
+	if len(r.NetworkInterfaces) > 0 {
+		printLongNetworkInterfaces(r.NetworkInterfaces)
 		fmt.Println("")
 	}
 	if r.NumberOfCpuCores != nil {

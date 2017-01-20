@@ -10,6 +10,7 @@ import (
 	"log"
 	"os"
 	"path"
+	"time"
 
 	"github.com/lfkeitel/saturn/src/utils"
 
@@ -46,9 +47,12 @@ func LoadPrivateKey(config *utils.Config) error {
 		return errors.New("No SSH authentication methods configured")
 	}
 
+	t, _ := time.ParseDuration(config.SSH.Timeout)
+
 	sshClientConfig = &ssh.ClientConfig{
-		User: config.SSH.Username,
-		Auth: authMethods,
+		User:    config.SSH.Username,
+		Auth:    authMethods,
+		Timeout: t,
 	}
 	return nil
 }
@@ -76,7 +80,8 @@ func UploadScript(config *utils.Config, hosts map[string]*utils.ConfigHost, genF
 		}
 
 		if err := uploadRemoteScript(config, host, f, s); err != nil {
-			return err
+			log.Println(err.Error())
+			host.Disable = true
 		}
 	}
 
@@ -113,6 +118,10 @@ func ExecuteScript(config *utils.Config, hosts map[string]*utils.ConfigHost, fil
 	filename = path.Base(filename)
 	responses := make([]*utils.HostResponse, 0, len(hosts))
 	for _, host := range hosts {
+		if host.Disable {
+			continue
+		}
+
 		if host.SSHConnection == nil {
 			if err := host.ConnectSSH(sshClientConfig); err != nil {
 				return nil, err

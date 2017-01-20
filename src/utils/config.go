@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"time"
 
 	"golang.org/x/crypto/ssh"
 
@@ -25,6 +26,7 @@ type Config struct {
 		Username   string
 		Password   string
 		PrivateKey string
+		Timeout    string
 	}
 	Hosts    []*ConfigHost
 	HostsMap map[string]*ConfigHost
@@ -119,6 +121,10 @@ func setConfigDefaults(c *Config) (*Config, error) {
 	c.Core.RemoteBaseDir = setStringOrDefault(c.Core.RemoteBaseDir, "$HOME")
 
 	c.SSH.Username = setStringOrDefault(c.SSH.Username, "root")
+	c.SSH.Timeout = setStringOrDefault(c.SSH.Timeout, "20s")
+	if _, err := time.ParseDuration(c.SSH.Timeout); err == nil {
+		c.SSH.Timeout = "20s"
+	}
 	return c, nil
 }
 

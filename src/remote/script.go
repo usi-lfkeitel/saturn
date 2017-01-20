@@ -2,6 +2,7 @@ package remote
 
 import (
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -15,6 +16,10 @@ func GenerateScript(config *utils.Config, modules []string) (string, error) {
 		return "", err
 	}
 	tempFileName := tempFile.Name()
+
+	if config.Core.Debug {
+		log.Printf("Generated Script: %s", tempFileName)
+	}
 
 	if err := generateRemoteScript(tempFile, config.Core.ModuleDir, modules); err != nil {
 		tempFile.Close()
