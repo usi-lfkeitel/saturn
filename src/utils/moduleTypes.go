@@ -447,14 +447,22 @@ func printLongNetworkConnections(a *NetworkConnections) {
 
 type NetworkInterfaces struct {
 	Interface string `json:"interface"`
-	Ip string `json:"ip"`
+	Ipv4Address string `json:"ipv4_address"`
+	Ipv6Address string `json:"ipv6_address"`
+	MacAddress string `json:"mac_address"`
+	Broadcast string `json:"broadcast"`
+	SubnetMask string `json:"subnet_mask"`
 }
 
 func printLongNetworkInterfaces(a []*NetworkInterfaces) {
 	fmt.Println("    Network Interfaces:")
 	for _, o := range a {
 		fmt.Printf("        Interface: %s\n", o.Interface)
-		fmt.Printf("        Ip: %s\n", o.Ip)
+		fmt.Printf("        Ipv4 Address: %s\n", o.Ipv4Address)
+		fmt.Printf("        Ipv6 Address: %s\n", o.Ipv6Address)
+		fmt.Printf("        Mac Address: %s\n", o.MacAddress)
+		fmt.Printf("        Broadcast: %s\n", o.Broadcast)
+		fmt.Printf("        Subnet Mask: %s\n", o.SubnetMask)
 		fmt.Println("")
 	}
 }
