@@ -36,6 +36,7 @@ var (
 	printShort   bool
 	showVersion  bool
 	debug        bool
+	specialDebug bool
 
 	version   = ""
 	buildTime = ""
@@ -62,6 +63,7 @@ func init() {
 	flag.BoolVar(&showVersion, "v", false, "Print version information")
 
 	flag.BoolVar(&debug, "d", false, "Enable debug mode")
+	flag.BoolVar(&specialDebug, "dd", false, "Enable secret debug mode")
 }
 
 func main() {
@@ -70,6 +72,10 @@ func main() {
 	if showVersion {
 		displayVersionInfo()
 		return
+	}
+
+	if specialDebug {
+		debug = true
 	}
 
 	if configFile == "" {
@@ -83,6 +89,7 @@ func main() {
 	}
 
 	config.Core.Debug = debug
+	config.Core.SpecialDebug = specialDebug
 
 	if err := remote.LoadPrivateKey(config); err != nil {
 		log.Println(err.Error())

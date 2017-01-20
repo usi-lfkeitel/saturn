@@ -138,7 +138,13 @@ func ExecuteScript(config *utils.Config, hosts map[string]*utils.ConfigHost, fil
 		session.Stdout = &stdoutBuf
 		session.Stderr = &stderrBuf
 
-		cmd := fmt.Sprintf("/bin/bash %s/.saturn/%s -d", config.Core.RemoteBaseDir, filename)
+		flags := "-d"
+
+		if config.Core.SpecialDebug {
+			flags = ""
+		}
+
+		cmd := fmt.Sprintf("/bin/bash %s/.saturn/%s %s", config.Core.RemoteBaseDir, filename, flags)
 		if err := session.Run(cmd); err != nil {
 			fmt.Println(err.Error())
 			fmt.Println(stderrBuf.String())

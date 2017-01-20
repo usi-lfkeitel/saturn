@@ -1,6 +1,7 @@
 #!/bin/bash
 #gen:module a interface:string,ipv4_address:string,ipv6_address:string,mac_address:string,broadcast:string,subnet_mask:string
 
+PATH="$PATH:/usr/sbin:/sbin"
 grepCmd=`which grep 2>/dev/null`
 ipCmd=`which ip 2>/dev/null`
 ifconfigCmd=`which ifconfig 2>/dev/null`

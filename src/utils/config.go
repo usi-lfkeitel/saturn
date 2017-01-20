@@ -17,6 +17,7 @@ type Config struct {
 	sourceFile string
 	Core       struct {
 		Debug         bool
+		SpecialDebug  bool
 		TempDir       string
 		ModuleDir     string
 		RemoteBaseDir string
