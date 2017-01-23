@@ -1,5 +1,5 @@
 #!/bin/bash
-#gen:module o os:string,kernel:string,hostname:string,uptime:string,server_time:string,path:string
+#gen:module o os:string,current_kernel:string,latest_kernel:string,hostname:string,uptime:string,server_time:string,path:string
 
 function displaytime {
   local T=$1
@@ -16,8 +16,23 @@ function displaytime {
 
 distro=$(grep -oP '^NAME="?.*"?' /etc/os-release | cut -d"=" -f2 | tr -d '"')
 uname=$(/bin/uname -r | sed -e 's/^"//'  -e 's/"$//')
+
+distrofamily=$(grep -oP '^ID="?.*"?' /etc/os-release | cut -d"=" -f2 | tr -d '"')
+
+debian() {
+	latestkernel=$(dpkg -l | grep linux-headers | grep ii | awk '{print $3}' | tail -n 1)
+}
+redhat() {
+	latestkernel=$(rpm -q kernel | tail -1 | sed 's/kernel-//')
+}
+
+case "$distrofamily" in
+debian|ubuntu) debian ;;
+fedora|rhel|centos|ol) redhat ;;
+esac
+
 hostname=$(/bin/hostname)
 uptime_seconds=$(/bin/cat /proc/uptime | awk '{print $1}')
 server_time=$(date)
 
-echo -n "{\"os\":\"$distro\",\"kernel\":\"$uname\",\"hostname\":\"$hostname\",\"uptime\":\"$(displaytime ${uptime_seconds%.*})\",\"server_time\":\"$server_time\",\"path\":\"$PATH\"}"
+echo -n "{\"os\":\"$distro\",\"current_kernel\":\"$uname\",\"latest_kernel\":\"$latestkernel\",\"hostname\":\"$hostname\",\"uptime\":\"$(displaytime ${uptime_seconds%.*})\",\"server_time\":\"$server_time\",\"path\":\"$PATH\"}"

@@ -240,7 +240,8 @@ func printLongDownloadTransferRate(a []*DownloadTransferRate) {
 
 type GeneralInfo struct {
 	Os string `json:"os"`
-	Kernel string `json:"kernel"`
+	CurrentKernel string `json:"current_kernel"`
+	LatestKernel string `json:"latest_kernel"`
 	Hostname string `json:"hostname"`
 	Uptime string `json:"uptime"`
 	ServerTime string `json:"server_time"`
@@ -250,7 +251,8 @@ type GeneralInfo struct {
 func printLongGeneralInfo(a *GeneralInfo) {
 	fmt.Println("    General Info:")
 	fmt.Printf("        Os: %s\n", a.Os)
-	fmt.Printf("        Kernel: %s\n", a.Kernel)
+	fmt.Printf("        Current Kernel: %s\n", a.CurrentKernel)
+	fmt.Printf("        Latest Kernel: %s\n", a.LatestKernel)
 	fmt.Printf("        Hostname: %s\n", a.Hostname)
 	fmt.Printf("        Uptime: %s\n", a.Uptime)
 	fmt.Printf("        Server Time: %s\n", a.ServerTime)
