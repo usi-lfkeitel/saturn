@@ -1,7 +1,7 @@
 #!/bin/bash
 #gen:module a package:string,installed:string,available:string
 
-DISTRO=$(grep -oP '^ID="?.*"?' /etc/os-release | cut -d"=" -f2 | tr -d '"' | tr -d ' ')
+DISTRO=$(grep -oP '^ID="?.*"?' /etc/os-release | cut -d"=" -f2 | tr -d '" ')
 
 debian() {
     aptList=$(apt-get --just-print upgrade 2>&1 | grep '^Inst')

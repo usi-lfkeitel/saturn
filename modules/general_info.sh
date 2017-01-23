@@ -17,7 +17,7 @@ function displaytime {
 distro=$(grep -oP '^NAME="?.*"?' /etc/os-release | cut -d"=" -f2 | tr -d '"')
 uname=$(/bin/uname -r | sed -e 's/^"//'  -e 's/"$//')
 
-distrofamily=$(grep -oP '^ID="?.*"?' /etc/os-release | cut -d"=" -f2 | tr -d '"' | tr -d ' ')
+distrofamily=$(grep -oP '^ID="?.*"?' /etc/os-release | cut -d"=" -f2 | tr -d '" ')
 
 debian() {
 	latestkernel=$(dpkg -l | grep linux-headers | grep ii | awk '{print $3}' | tail -n 1)
