@@ -20,7 +20,7 @@ uname=$(/bin/uname -r | sed -e 's/^"//'  -e 's/"$//')
 distrofamily=$(grep -oP '^ID="?.*"?' /etc/os-release | cut -d"=" -f2 | tr -d '" ')
 
 debian() {
-	latestkernel=$(dpkg -l | grep linux-headers | grep ii | awk '{print $3}' | tail -n 1)
+	latestkernel=$(dpkg -l | grep 'linux-image-[[:digit:]]' | grep ii | awk '{print $2}' | tail -n 1 | sed 's/linux-image-//')
 }
 redhat() {
 	latestkernel=$(rpm -q kernel | tail -1 | sed 's/kernel-//')
