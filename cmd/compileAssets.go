@@ -10,6 +10,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"strings"
 )
 
 var (
@@ -75,6 +76,7 @@ import (
 	"io"
 	"io/ioutil"
 	"path"
+	"strings"
 )
 
 var localMode = false
@@ -86,6 +88,7 @@ func writeCommon(w io.Writer) error {
 	_, err := w.Write([]byte(`
 func getBinData(name string) ([]byte, error) {
 	name = path.Clean(name)
+	name = strings.Replace(name, "\\", "/", -1) // Ensure unix-like path
 
 	if localMode {
 		return getLocalData(name)
@@ -134,6 +137,7 @@ func writeData(w io.Writer) error {
 		gz.Close()
 
 		assetPath, _ := filepath.Rel(relativeTo, filename)
+		assetPath = strings.Replace(assetPath, "\\", "/", -1)
 		fmt.Fprintf(w, `"%s": %#v,%s`, assetPath, compressed.Bytes(), "\n")
 	}
 

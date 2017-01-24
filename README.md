@@ -8,7 +8,7 @@ All you need to get started is the release package found under Releases. It cont
 
 ## Build
 
-Clone the repo and run `make generate && make`. A binary will be created at `./bin/saturn`.
+Run `go get github.com/usi-lfkeitel/saturn/cmd/saturn` or clone the repo to the appropriate place in your $GOPATH and run `make generate && make`. A binary will be created at `./bin/saturn`.
 
 ## Configuration
 
