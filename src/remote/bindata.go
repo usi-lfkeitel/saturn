@@ -7,12 +7,14 @@ import (
 	"io"
 	"io/ioutil"
 	"path"
+	"strings"
 )
 
 var localMode = false
 
 func getBinData(name string) ([]byte, error) {
 	name = path.Clean(name)
+	name = strings.Replace(name, "\\", "/", -1) // Ensure unix-like path
 
 	if localMode {
 		return getLocalData(name)
