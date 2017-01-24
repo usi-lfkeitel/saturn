@@ -12,7 +12,7 @@ import (
 	"path"
 	"time"
 
-	"github.com/lfkeitel/saturn/src/utils"
+	"github.com/usi-lfkeitel/saturn/src/utils"
 
 	"golang.org/x/crypto/ssh"
 )

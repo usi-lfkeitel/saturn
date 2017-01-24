@@ -11,8 +11,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/lfkeitel/saturn/src/remote"
-	"github.com/lfkeitel/saturn/src/utils"
+	"github.com/usi-lfkeitel/saturn/src/remote"
+	"github.com/usi-lfkeitel/saturn/src/utils"
 )
 
 type stringFlagList []string
