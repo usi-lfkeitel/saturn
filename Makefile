@@ -5,6 +5,7 @@ NAME := saturn
 DESC := Server statistics client
 VERSION := $(shell git describe --tags --always --dirty)
 GOVERSION := $(shell go version)
+GOBIN ?= $(PWD)/bin
 BUILDTIME := $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
 BUILDDATE := $(shell date -u +"%B %d, %Y")
 BUILDER := $(shell echo "`git config user.name` <`git config user.email`>")
@@ -51,7 +52,7 @@ generate:
 	go generate ./cmd/saturn/main.go
 
 saturn:
-	GOBIN=$(PWD)/bin go install -v -ldflags "$(LDFLAGS)" -tags '$(BUILDTAGS)' ./cmd/saturn
+	GOBIN="$(GOBIN)" go install -v -ldflags "$(LDFLAGS)" -tags '$(BUILDTAGS)' ./cmd/saturn
 
 dist: vet all
 	@rm -rf ./dist
