@@ -34,15 +34,49 @@ type Config struct {
 }
 
 type ConfigHost struct {
-	Name          string      `json:"name"`
-	Address       string      `json:"address"`
-	Disable       bool        `json:"disabled"`
-	SSHConnection *ssh.Client `json:"-"`
+	Name          string            `json:"name"`
+	Address       string            `json:"address"`
+	Username      string            `json:"username"`
+	Password      string            `json:"-"`
+	PrivateKey    string            `json:"-"`
+	Disable       bool              `json:"disabled"`
+	SSHConnection *ssh.Client       `json:"-"`
+	SSHConfig     *ssh.ClientConfig `json:"-"`
 }
 
 func (c *ConfigHost) ConnectSSH(clientConfig *ssh.ClientConfig) error {
+	if c.SSHConfig == nil {
+		// Make a copy for this host
+		var hostSSHConfig *ssh.ClientConfig
+		*hostSSHConfig = *clientConfig
+
+		// Replace the global connection options with host specific ones if given
+		if c.Password != "" {
+			hostSSHConfig.Auth = append(hostSSHConfig.Auth, ssh.Password(c.Password))
+		}
+
+		if c.PrivateKey != "" {
+			sshPrivateKey, err := ioutil.ReadFile(c.PrivateKey)
+			if err != nil {
+				return err
+			}
+
+			signer, err := ssh.ParsePrivateKey(sshPrivateKey)
+			if err != nil {
+				return err
+			}
+			hostSSHConfig.Auth = append(hostSSHConfig.Auth, ssh.PublicKeys(signer))
+		}
+
+		if c.Username != "" {
+			hostSSHConfig.User = c.Username
+		}
+
+		c.SSHConfig = hostSSHConfig
+	}
+
 	var err error
-	c.SSHConnection, err = ssh.Dial("tcp", c.Address+":22", clientConfig)
+	c.SSHConnection, err = ssh.Dial("tcp", c.Address+":22", c.SSHConfig)
 	return err
 }
 
