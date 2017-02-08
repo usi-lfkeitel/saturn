@@ -19,6 +19,7 @@ useIPCmd() {
     interfaces=$($ipCmd address show | $grepCmd -oP '^\d+\: .*?\:' | cut -d' ' -f2 | tr -d ':')
 
     for item in $interfaces; do
+        item=$(echo "$item" | cut -d'@' -f1) # Get the main name of a subinterface
         interface=$($ipCmd address show dev $item)
         if [[ ! "$interface" =~ inet ]]; then
             continue
