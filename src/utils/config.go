@@ -22,6 +22,7 @@ type Config struct {
 		ModuleDir     string
 		RemoteBaseDir string
 		KeepTempFiles bool
+		HaltOnError   bool
 	}
 	SSH struct {
 		Username   string
@@ -47,25 +48,29 @@ type ConfigHost struct {
 func (c *ConfigHost) ConnectSSH(clientConfig *ssh.ClientConfig) error {
 	if c.SSHConfig == nil {
 		// Make a copy for this host
-		var hostSSHConfig *ssh.ClientConfig
+		hostSSHConfig := &ssh.ClientConfig{}
 		*hostSSHConfig = *clientConfig
 
 		// Replace the global connection options with host specific ones if given
-		if c.Password != "" {
-			hostSSHConfig.Auth = append(hostSSHConfig.Auth, ssh.Password(c.Password))
-		}
+		if c.Password != "" || c.PrivateKey != "" {
+			hostSSHConfig.Auth = make([]ssh.AuthMethod, 0, 1)
 
-		if c.PrivateKey != "" {
-			sshPrivateKey, err := ioutil.ReadFile(c.PrivateKey)
-			if err != nil {
-				return err
+			if c.Password != "" {
+				hostSSHConfig.Auth = append(hostSSHConfig.Auth, ssh.Password(c.Password))
 			}
 
-			signer, err := ssh.ParsePrivateKey(sshPrivateKey)
-			if err != nil {
-				return err
+			if c.PrivateKey != "" {
+				sshPrivateKey, err := ioutil.ReadFile(c.PrivateKey)
+				if err != nil {
+					return err
+				}
+
+				signer, err := ssh.ParsePrivateKey(sshPrivateKey)
+				if err != nil {
+					return err
+				}
+				hostSSHConfig.Auth = append(hostSSHConfig.Auth, ssh.PublicKeys(signer))
 			}
-			hostSSHConfig.Auth = append(hostSSHConfig.Auth, ssh.PublicKeys(signer))
 		}
 
 		if c.Username != "" {
@@ -75,9 +80,16 @@ func (c *ConfigHost) ConnectSSH(clientConfig *ssh.ClientConfig) error {
 		c.SSHConfig = hostSSHConfig
 	}
 
+	if c.SSHConfig.User == "" || len(c.SSHConfig.Auth) == 0 {
+		return fmt.Errorf("Username or password not given for host %s", c.Name)
+	}
+
 	var err error
 	c.SSHConnection, err = ssh.Dial("tcp", c.Address+":22", c.SSHConfig)
-	return err
+	if err != nil {
+		return fmt.Errorf("Login failed on %s. Check username or password.", c.Name)
+	}
+	return nil
 }
 
 // FindConfigFile will locate the a configuration file by looking at the following places
@@ -154,7 +166,6 @@ func setConfigDefaults(c *Config) (*Config, error) {
 	c.Core.TempDir = setStringOrDefault(c.Core.TempDir, "./tmp")
 	c.Core.ModuleDir = setStringOrDefault(c.Core.ModuleDir, "./modules")
 	c.Core.RemoteBaseDir = setStringOrDefault(c.Core.RemoteBaseDir, "$HOME")
-
 	c.SSH.Username = setStringOrDefault(c.SSH.Username, "root")
 	c.SSH.Timeout = setStringOrDefault(c.SSH.Timeout, "20s")
 	if _, err := time.ParseDuration(c.SSH.Timeout); err == nil {

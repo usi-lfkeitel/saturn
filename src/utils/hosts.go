@@ -18,6 +18,9 @@ func CheckHosts(config *Config, hostList []string) (map[string]*ConfigHost, erro
 				log.Printf("%s disabled in config, skipping", host)
 				continue
 			}
+			if configHost.Name == "" {
+				configHost.Name = configHost.Address
+			}
 			hosts[host] = configHost
 		}
 	} else {
@@ -25,6 +28,9 @@ func CheckHosts(config *Config, hostList []string) (map[string]*ConfigHost, erro
 			if host.Disable {
 				log.Printf("%s disabled in config, skipping", hostname)
 				continue
+			}
+			if host.Name == "" {
+				host.Name = host.Address
 			}
 			hosts[hostname] = host
 		}

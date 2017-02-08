@@ -3,7 +3,6 @@ package remote
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -20,11 +19,7 @@ import (
 var sshClientConfig *ssh.ClientConfig
 
 func LoadPrivateKey(config *utils.Config) error {
-	if config.SSH.Username == "" {
-		return errors.New("No SSH username configured")
-	}
-
-	authMethods := make([]ssh.AuthMethod, 0, 2)
+	authMethods := make([]ssh.AuthMethod, 0, 1)
 
 	if config.SSH.PrivateKey != "" {
 		sshPrivateKey, err := ioutil.ReadFile(config.SSH.PrivateKey)
@@ -41,10 +36,6 @@ func LoadPrivateKey(config *utils.Config) error {
 
 	if config.SSH.Password != "" {
 		authMethods = append(authMethods, ssh.Password(config.SSH.Password))
-	}
-
-	if len(authMethods) == 0 {
-		return errors.New("No SSH authentication methods configured")
 	}
 
 	t, _ := time.ParseDuration(config.SSH.Timeout)
@@ -80,6 +71,9 @@ func UploadScript(config *utils.Config, hosts map[string]*utils.ConfigHost, genF
 		}
 
 		if err := uploadRemoteScript(config, host, f, s); err != nil {
+			if config.Core.HaltOnError {
+				return err
+			}
 			log.Println(err.Error())
 			host.Disable = true
 		}
