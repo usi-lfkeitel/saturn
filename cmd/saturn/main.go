@@ -140,7 +140,7 @@ func printResults(resps []*utils.HostResponse) {
 		fallthrough
 	default:
 		for _, resp := range resps {
-			fmt.Printf("Stats for %s:\n\n", resp.Host.Address)
+			fmt.Printf("Stats for %s (%s):\n\n", resp.Host.Name, resp.Host.Address)
 			resp.Print(printShort)
 		}
 	}
