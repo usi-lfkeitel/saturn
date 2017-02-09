@@ -1,5 +1,5 @@
 #!/bin/bash
-#gen:module o connections:int,address:string
+#gen:module a connections:int,address:string
 
 netstatCmd=`which netstat`
 awkCmd=`which awk`
