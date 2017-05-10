@@ -259,6 +259,7 @@ func printLongDownloadTransferRate(depth int, a []*DownloadTransferRate) {
 
 type GeneralInfo struct {
 	Os string `json:"os"`
+	OsVersion string `json:"os_version"`
 	CurrentKernel string `json:"current_kernel"`
 	LatestKernel string `json:"latest_kernel"`
 	Hostname string `json:"hostname"`
@@ -271,6 +272,7 @@ func printLongGeneralInfo(depth int, o *GeneralInfo) {
 	indent := strings.Repeat(" ", depth*2)
 	fmt.Printf("%sGeneral Info:\n", indent)
 	fmt.Printf("%sOs: %s\n", indent, o.Os)
+	fmt.Printf("%sOs Version: %s\n", indent, o.OsVersion)
 	fmt.Printf("%sCurrent Kernel: %s\n", indent, o.CurrentKernel)
 	fmt.Printf("%sLatest Kernel: %s\n", indent, o.LatestKernel)
 	fmt.Printf("%sHostname: %s\n", indent, o.Hostname)
