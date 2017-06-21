@@ -43,6 +43,7 @@ type ConfigHost struct {
 	Disable       bool              `json:"disabled"`
 	SSHConnection *ssh.Client       `json:"-"`
 	SSHConfig     *ssh.ClientConfig `json:"-"`
+	appConfig     *Config
 }
 
 func (c *ConfigHost) ConnectSSH(clientConfig *ssh.ClientConfig) error {
@@ -87,6 +88,9 @@ func (c *ConfigHost) ConnectSSH(clientConfig *ssh.ClientConfig) error {
 	var err error
 	c.SSHConnection, err = ssh.Dial("tcp", c.Address+":22", c.SSHConfig)
 	if err != nil {
+		if c.appConfig.Core.Debug {
+			return fmt.Errorf("Login failed on %s: %s", c.Name, err.Error())
+		}
 		return fmt.Errorf("Login failed on %s. Check username or password.", c.Name)
 	}
 	return nil
@@ -154,6 +158,7 @@ func NewConfig(configFile string) (conf *Config, err error) {
 		if _, exists := con.HostsMap[host.Name]; exists {
 			return nil, fmt.Errorf("Host %s duplicated in configuration", host.Name)
 		}
+		host.appConfig = &con
 		con.HostsMap[host.Name] = host
 	}
 
