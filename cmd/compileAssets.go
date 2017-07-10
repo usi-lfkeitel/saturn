@@ -112,6 +112,15 @@ func getLocalData(name string) ([]byte, error) {
 	return ioutil.ReadFile(name)
 }
 
+func getFileList() ([]string) {
+    files := make([]string, len(_binData))
+    i := 0
+    for k := range _binData {
+        files[i] = k
+        i++
+    }
+    return files
+}
 `))
 	return err
 }

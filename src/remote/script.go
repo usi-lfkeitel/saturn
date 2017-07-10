@@ -85,3 +85,12 @@ fi
 
 	return nil
 }
+
+func GetModuleList() []string {
+	m := getFileList()
+	for i, v := range m {
+		m[i] = strings.Split(v, "/")[1]
+		m[i] = m[i][:len(m[i])-3]
+	}
+	return m
+}

@@ -37,6 +37,7 @@ var (
 	showVersion  bool
 	debug        bool
 	specialDebug bool
+	listModule   bool
 
 	version   = ""
 	buildTime = ""
@@ -61,6 +62,7 @@ func init() {
 	flag.BoolVar(&printShort, "s", false, "Print short output")
 
 	flag.BoolVar(&showVersion, "v", false, "Print version information")
+	flag.BoolVar(&listModule, "list", false, "List available modules")
 
 	flag.BoolVar(&debug, "d", false, "Enable debug mode")
 	flag.BoolVar(&specialDebug, "dd", false, "Enable secret debug mode")
@@ -71,6 +73,11 @@ func main() {
 
 	if showVersion {
 		displayVersionInfo()
+		return
+	}
+
+	if listModule {
+		listModules()
 		return
 	}
 
@@ -155,4 +162,13 @@ Built:       %s
 Compiled by: %s
 Go version:  %s
 `, version, buildTime, builder, goversion)
+}
+
+func listModules() {
+	modules := remote.GetModuleList()
+
+	fmt.Println("Available Modules:")
+	for _, m := range modules {
+		fmt.Printf("  - %s\n", m)
+	}
 }
