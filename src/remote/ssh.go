@@ -157,6 +157,7 @@ func ExecuteScript(config *utils.Config, hosts map[string]*utils.ConfigHost, fil
 
 		var response utils.HostResponse
 		if err := json.Unmarshal(stdoutBuf.Bytes(), &response); err != nil {
+			fmt.Println(stdoutBuf.String())
 			fmt.Println(err.Error())
 			continue
 		}

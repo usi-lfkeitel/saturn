@@ -257,6 +257,19 @@ func printLongDownloadTransferRate(depth int, a []*DownloadTransferRate) {
 	}
 }
 
+type EnabledServices struct {
+	Name string `json:"name"`
+}
+
+func printLongEnabledServices(depth int, a []*EnabledServices) {
+	indent := strings.Repeat(" ", depth*2)
+	fmt.Printf("%sEnabled Services:\n", indent)
+	for _, o := range a {
+	fmt.Printf("%sName: %s\n", indent, o.Name)
+	fmt.Println("")
+	}
+}
+
 type GeneralInfo struct {
 	Os string `json:"os"`
 	OsVersion string `json:"os_version"`
@@ -715,6 +728,7 @@ type HostResponse struct {
 	DiskPartitions []*DiskPartitions `json:"disk_partitions,omitempty"`
 	DockerProcesses []*DockerProcesses `json:"docker_processes,omitempty"`
 	DownloadTransferRate []*DownloadTransferRate `json:"download_transfer_rate,omitempty"`
+	EnabledServices []*EnabledServices `json:"enabled_services,omitempty"`
 	GeneralInfo *GeneralInfo `json:"general_info,omitempty"`
 	IoStats []*IoStats `json:"io_stats,omitempty"`
 	LoadAvg *LoadAvg `json:"load_avg,omitempty"`
@@ -798,6 +812,10 @@ func (r *HostResponse) printLong() {
 	}
 	if len(r.DownloadTransferRate) > 0 {
 		printLongDownloadTransferRate(1, r.DownloadTransferRate)
+		fmt.Println("")
+	}
+	if len(r.EnabledServices) > 0 {
+		printLongEnabledServices(1, r.EnabledServices)
 		fmt.Println("")
 	}
 	if r.GeneralInfo != nil {
