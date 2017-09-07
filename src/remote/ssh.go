@@ -2,6 +2,7 @@ package remote
 
 import (
 	"bytes"
+	"crypto/x509"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -9,11 +10,13 @@ import (
 	"log"
 	"os"
 	"path"
+	"syscall"
 	"time"
 
 	"github.com/usi-lfkeitel/saturn/src/utils"
 
 	"golang.org/x/crypto/ssh"
+	"golang.org/x/crypto/ssh/terminal"
 )
 
 var sshClientConfig *ssh.ClientConfig
@@ -27,7 +30,10 @@ func LoadPrivateKey(config *utils.Config) error {
 			return err
 		}
 
-		signer, err := ssh.ParsePrivateKey(sshPrivateKey)
+		signer, err := ssh.ParsePrivateKeyWithPassphrase(sshPrivateKey, []byte{})
+		if err == x509.IncorrectPasswordError {
+			signer, err = loadPrivateKeyPromptPassphrase(sshPrivateKey)
+		}
 		if err != nil {
 			return err
 		}
@@ -41,11 +47,27 @@ func LoadPrivateKey(config *utils.Config) error {
 	t, _ := time.ParseDuration(config.SSH.Timeout)
 
 	sshClientConfig = &ssh.ClientConfig{
-		User:    config.SSH.Username,
-		Auth:    authMethods,
-		Timeout: t,
+		User:            config.SSH.Username,
+		Auth:            authMethods,
+		Timeout:         t,
+		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 	}
 	return nil
+}
+
+func loadPrivateKeyPromptPassphrase(key []byte) (ssh.Signer, error) {
+	return ssh.ParsePrivateKeyWithPassphrase(key, getPassword())
+}
+
+func getPassword() []byte {
+	fmt.Print("SSH Key Password: ")
+	bytePassword, err := terminal.ReadPassword(int(syscall.Stdin))
+	if err != nil {
+		log.Println(err.Error())
+	}
+	fmt.Println("")
+
+	return bytes.TrimSpace(bytePassword)
 }
 
 func UploadScript(config *utils.Config, hosts map[string]*utils.ConfigHost, genFilename string) error {
