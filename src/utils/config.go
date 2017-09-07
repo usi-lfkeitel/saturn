@@ -43,7 +43,7 @@ type ConfigHost struct {
 	Disable       bool              `json:"disabled"`
 	SSHConnection *ssh.Client       `json:"-"`
 	SSHConfig     *ssh.ClientConfig `json:"-"`
-	appConfig     *Config           `json:"-"`
+	appConfig     *Config
 }
 
 func (c *ConfigHost) ConnectSSH(clientConfig *ssh.ClientConfig) error {
