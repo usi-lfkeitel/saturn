@@ -44,6 +44,10 @@ func LoadPrivateKey(config *utils.Config) error {
 		authMethods = append(authMethods, ssh.Password(config.SSH.Password))
 	}
 
+	if len(authMethods) == 0 {
+		authMethods = append(authMethods, ssh.Password(string(getPassword("SSH Password: "))))
+	}
+
 	t, _ := time.ParseDuration(config.SSH.Timeout)
 
 	sshClientConfig = &ssh.ClientConfig{
@@ -56,11 +60,11 @@ func LoadPrivateKey(config *utils.Config) error {
 }
 
 func loadPrivateKeyPromptPassphrase(key []byte) (ssh.Signer, error) {
-	return ssh.ParsePrivateKeyWithPassphrase(key, getPassword())
+	return ssh.ParsePrivateKeyWithPassphrase(key, getPassword("SSH Key Password: "))
 }
 
-func getPassword() []byte {
-	fmt.Print("SSH Key Password: ")
+func getPassword(prompt string) []byte {
+	fmt.Print(prompt)
 	bytePassword, err := terminal.ReadPassword(int(syscall.Stdin))
 	if err != nil {
 		log.Println(err.Error())
