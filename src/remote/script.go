@@ -11,6 +11,12 @@ import (
 )
 
 func GenerateScript(config *utils.Config, modules []string) (string, error) {
+	if !utils.FileExists(config.Core.TempDir) {
+		if err := os.MkdirAll(config.Core.TempDir, 0755); err != nil {
+			return "", err
+		}
+	}
+
 	tempFile, err := ioutil.TempFile(config.Core.TempDir, "")
 	if err != nil {
 		return "", err
