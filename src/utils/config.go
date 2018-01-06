@@ -171,7 +171,7 @@ func setConfigDefaults(c *Config) (*Config, error) {
 	c.Core.TempDir = setStringOrDefault(c.Core.TempDir, "./tmp")
 	c.Core.ModuleDir = setStringOrDefault(c.Core.ModuleDir, "./modules")
 	c.Core.RemoteBaseDir = setStringOrDefault(c.Core.RemoteBaseDir, "$HOME")
-	c.SSH.Username = setStringOrDefault(c.SSH.Username, "root")
+	c.SSH.Username = setStringOrDefault(c.SSH.Username, os.Getenv("USER"))
 	c.SSH.Timeout = setStringOrDefault(c.SSH.Timeout, "20s")
 	if _, err := time.ParseDuration(c.SSH.Timeout); err == nil {
 		c.SSH.Timeout = "20s"
