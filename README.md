@@ -35,38 +35,42 @@ name = "Server2"
 address = "192.168.1.2"
 ```
 
-Hosts have the following settings:
-
-- name: string - The display name of the host
-- address: string - The hostname or ip address of the host
-- disable: bool - Disables the host
-
-Using the disable option can be nice so you don't have to delete a host entry. This can be used as a maintenance mode.
-
-SSH supports both password and key authentication. If using a key, the setting must be the file path to the private key.
+Please refer to the example configuration file for details on all available settings.
 
 ## Running Saturn
 
 So, you have your configuration ready with all your hosts defined. Now let's actually get some data. Here's all the flags that Saturn can use:
 
-- -limit  Comma separated list of hosts to run on. Use this option for quick data grabs without having to disable all clients in a configuration. Listed clients will be used except those disabled by the config.
-- -m, -module  Comma separated list of modules to run.
-- -c  Configuration file to use.
-- -o  Output mode. One of: json, plain (default)
-- -s  Print shorter output. Only affects plain output mode.
-- -v  Print version information.
+- `-c`:  Configuration file to use.
+- `-d,-dd`: Enable debug mode
+- `-limit host1,host2`:  Comma separated list of hosts to run on. Use this option for quick data grabs without having to disable
+all clients in a configuration. Listed clients will be used except those disabled by the config.
+- `-list`: List available modules.
+- `-m,-module module1, module2`: Comma separated list of modules to run.
+- `-o MODE`:  Output mode. One of: json, plain (default)
+- `-s`:  Print shorter output. Only affects plain output mode.
+- `-v`:  Print version information.
 
 Here's a quick demo:
 
 `./saturn -c config.toml -limit Server1 -m io_stats,cpu_info`
 
-This will run the io_stats and cpu_info modules only on Server1 (unless it's disabled in the config). It will then output information from the modules in a structured, readable format.
+This will run the io\_stats and cpu\_info modules only on Server1 (unless it's disabled in the config). It will then output
+information from the modules in a structured, readable format.
 
 ## Modules
 
-Saturn is based on a set of modules which are nothing more than shell scripts that output JSON. The modules are embedded into the binary at build time. At this time there's no way to run or use custom modules. If you would like to use a different module, you'll need to recompile the binary.
+Saturn is based on a set of modules which are nothing more than shell scripts that output JSON. The modules are embedded into the
+binary at build time. Custom modules can be used by placing them in the modules directory set in the configuration file. Module
+named are based on their file name so it's recommended to keep them sort and use only alphanumeric characters, underscores, or
+hyphens. Other characters are not guaranteed to work. Custom modules cannot override builtin modules.
 
-A module file must output only JSON to stdout. A module may output either a JSON array or object. A module file must have a `gen:module` comment on the second line so it can be added to the binary. The syntax of this line is as follows: `#gen:module [a|o] key1:type1,key2:type2,...`. The first parameter is either "a" or "o" depending on if the module outputs a JSON Array or Object. The letter must be lower-case. The key type pairs specify the schema of the JSON. Keys cannot start with a number or a comma/semicolon. Supported types are `string`, `int`, `bool`, and `float64`. The key names will be transformed as needed to conform with Go's variable naming syntax.
+A module file must output only JSON to stdout. A module may output either a JSON array or object. A module file must have a
+`gen:module` comment on the second line so it can be added to the binary. The syntax of this line is as follows:
+`#gen:module [a|o] key1:type1,key2:type2,...`. The first parameter is either "a" or "o" depending on if the module outputs a JSON
+[a]rray or [o]bject. The letter must be lower-case. The key type pairs specify the schema of the JSON. Keys cannot start with a number
+or a comma/semicolon. Supported types are `string`, `int`, `bool`, and `float64`. The key names will be transformed as needed to
+conform with Go's variable naming syntax.
 
 Here's a list of first-party modules:
 
@@ -82,15 +86,17 @@ Here's a list of first-party modules:
 - **disk_partitions**:
 - **docker_processes**:
 - **download_transfer_rate**:
+- **enabled_services**:
 - **general_info**:
 - **io_stats**:
-- **ip_addresses**:
+- **listening_ports**:
 - **load_avg**:
 - **logged_in_users**:
 - **memcached**:
 - **memory_info**:
 - **needs_upgrades**:
 - **network_connections**:
+- **network_interfaces**:
 - **number_of_cpu_cores**:
 - **ping**:
 - **pm2_stats**:

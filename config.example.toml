@@ -1,0 +1,24 @@
+[Core]
+Debug         = false           # Enables debug mode
+SpecialDebug  = false           # Enables special debug mode
+TempDir       = "$PWD/tmp"      # Directory used for temporary file storage
+ModuleDir     = "$PWD/modules"  # Directory for custom modules
+RemoteBaseDir = "$HOME"         # Directory the remote host where Saturn will work
+KeepTempFiles = false           # Debug flag to keep generated files
+HaltOnError   = false           # If true, execution stops if a host fails on script upload
+
+# Default SSH connection settings
+[SSH]
+Username   = ""
+Password   = ""
+PrivateKey = ""     # Path to an SSH identity file
+Timeout    = "20s"
+
+# Host section, each host requires one of these
+[[Hosts]]
+Name       = ""     # Display name for host, defaults to Address
+Address    = ""     # Hostname or IP address of host
+Username   = ""     # Override global SSH username
+Password   = ""     # Override global SSH password
+PrivateKey = ""     # Override global SSH private key
+Disable    = false  # Disable host

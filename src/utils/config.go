@@ -155,6 +155,12 @@ func NewConfig(configFile string) (conf *Config, err error) {
 
 	con.HostsMap = make(map[string]*ConfigHost)
 	for _, host := range con.Hosts {
+		if host.Name == "" {
+			if host.Address == "" {
+				return nil, fmt.Errorf("Host with no name or address in configuration")
+			}
+			host.Name = host.Address
+		}
 		if _, exists := con.HostsMap[host.Name]; exists {
 			return nil, fmt.Errorf("Host %s duplicated in configuration", host.Name)
 		}
