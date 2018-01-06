@@ -1,10 +1,12 @@
 package remote
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 
 	"github.com/usi-lfkeitel/saturn/src/utils"
@@ -98,5 +100,6 @@ func GetModuleList() []string {
 		m[i] = strings.Split(v, "/")[1]
 		m[i] = m[i][:len(m[i])-3]
 	}
+	sort.Strings(m)
 	return m
 }
