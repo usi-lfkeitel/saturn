@@ -316,6 +316,29 @@ func printLongIoStats(depth int, a []*IoStats) {
 	}
 }
 
+type ListeningPorts struct {
+	Process string `json:"process"`
+	Pid string `json:"pid"`
+	Type string `json:"type"`
+	Proto string `json:"proto"`
+	Address string `json:"address"`
+	Port string `json:"port"`
+}
+
+func printLongListeningPorts(depth int, a []*ListeningPorts) {
+	indent := strings.Repeat(" ", depth*2)
+	fmt.Printf("%sListening Ports:\n", indent)
+	for _, o := range a {
+	fmt.Printf("%sProcess: %s\n", indent, o.Process)
+	fmt.Printf("%sPid: %s\n", indent, o.Pid)
+	fmt.Printf("%sType: %s\n", indent, o.Type)
+	fmt.Printf("%sProto: %s\n", indent, o.Proto)
+	fmt.Printf("%sAddress: %s\n", indent, o.Address)
+	fmt.Printf("%sPort: %s\n", indent, o.Port)
+	fmt.Println("")
+	}
+}
+
 type LoadAvg struct {
 	Avg1Min int `json:"avg_1_min"`
 	Avg5Min int `json:"avg_5_min"`
@@ -731,6 +754,7 @@ type HostResponse struct {
 	EnabledServices []*EnabledServices `json:"enabled_services,omitempty"`
 	GeneralInfo *GeneralInfo `json:"general_info,omitempty"`
 	IoStats []*IoStats `json:"io_stats,omitempty"`
+	ListeningPorts []*ListeningPorts `json:"listening_ports,omitempty"`
 	LoadAvg *LoadAvg `json:"load_avg,omitempty"`
 	LoggedInUsers []*LoggedInUsers `json:"logged_in_users,omitempty"`
 	Memcached *Memcached `json:"memcached,omitempty"`
@@ -824,6 +848,10 @@ func (r *HostResponse) printLong() {
 	}
 	if len(r.IoStats) > 0 {
 		printLongIoStats(1, r.IoStats)
+		fmt.Println("")
+	}
+	if len(r.ListeningPorts) > 0 {
+		printLongListeningPorts(1, r.ListeningPorts)
 		fmt.Println("")
 	}
 	if r.LoadAvg != nil {
