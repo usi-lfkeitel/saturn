@@ -66,7 +66,7 @@ main() {
 
 		m, err := getBinData(moduleFile)
 		if err != nil {
-			return err
+			return fmt.Errorf("Module not found %s", module)
 		}
 
 		goodModules[module] = true

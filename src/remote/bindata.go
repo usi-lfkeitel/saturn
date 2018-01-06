@@ -3,25 +3,24 @@ package remote
 import (
 	"bytes"
 	"compress/gzip"
-	"fmt"
 	"io"
 	"io/ioutil"
-	"path"
+	"path/filepath"
 	"strings"
 )
 
-var localMode = false
+var localOnly = false
 
 func getBinData(name string) ([]byte, error) {
-	name = path.Clean(name)
+	name = filepath.Clean(name)
 	name = strings.Replace(name, "\\", "/", -1) // Ensure unix-like path
 
-	if localMode {
+	if localOnly {
 		return getLocalData(name)
 	}
 
 	if _, ok := _binData[name]; !ok {
-		return nil, fmt.Errorf("Static asset with name %s doesn't exist", name)
+		return getLocalData(name)
 	}
 
 	var uncompressed bytes.Buffer
