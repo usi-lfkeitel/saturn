@@ -91,7 +91,7 @@ func (c *ConfigHost) ConnectSSH(clientConfig *ssh.ClientConfig) error {
 		if c.appConfig.Core.Debug {
 			return fmt.Errorf("Login failed on %s: %s", c.Name, err.Error())
 		}
-		return fmt.Errorf("Login failed on %s. Check username or password.", c.Name)
+		return fmt.Errorf("Login failed on %s. Check username or password: %s", c.Name, err)
 	}
 	return nil
 }
