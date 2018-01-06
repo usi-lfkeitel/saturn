@@ -7,11 +7,11 @@ function displaytime {
   local H=$((T/60/60%24))
   local M=$((T/60%60))
   local S=$((T%60))
-  [[ $D > 0 ]] && printf '%d days ' $D
-  [[ $H > 0 ]] && printf '%d hours ' $H
-  [[ $M > 0 ]] && printf '%d minutes ' $M
-  [[ $D > 0 || $H > 0 || $M > 0 ]] && printf 'and '
-  printf '%d seconds\n' $S
+
+  (( $D > 0 )) && if (( $D < 10 )); then printf '0%d:' $D; else printf '%d:' $D; fi
+  if (( $H < 10 )); then echo -n "0$H:"; else echo -n "$H:"; fi
+  if (( $M < 10 )); then echo -n "0$M:"; else echo -n "$M:"; fi
+  if (( $S < 10 )); then echo -n "0$S"; else echo -n "$S"; fi
 }
 
 distro=$(grep -oP '^NAME="?.*"?' /etc/os-release | cut -d"=" -f2 | tr -d '"')
