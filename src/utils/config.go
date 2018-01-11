@@ -29,6 +29,7 @@ type Config struct {
 		Password   string
 		PrivateKey string
 		Timeout    string
+		UseAgent   bool
 	}
 	Hosts    []*ConfigHost
 	HostsMap map[string]*ConfigHost
@@ -91,7 +92,7 @@ func (c *ConfigHost) ConnectSSH(clientConfig *ssh.ClientConfig) error {
 		if c.appConfig.Core.Debug {
 			return fmt.Errorf("Login failed on %s: %s", c.Name, err.Error())
 		}
-		return fmt.Errorf("Login failed on %s. Check username or password.", c.Name)
+		return fmt.Errorf("Login failed on %s. Check username or password: %s", c.Name, err)
 	}
 	return nil
 }
@@ -155,6 +156,12 @@ func NewConfig(configFile string) (conf *Config, err error) {
 
 	con.HostsMap = make(map[string]*ConfigHost)
 	for _, host := range con.Hosts {
+		if host.Name == "" {
+			if host.Address == "" {
+				return nil, fmt.Errorf("Host with no name or address in configuration")
+			}
+			host.Name = host.Address
+		}
 		if _, exists := con.HostsMap[host.Name]; exists {
 			return nil, fmt.Errorf("Host %s duplicated in configuration", host.Name)
 		}
@@ -171,7 +178,7 @@ func setConfigDefaults(c *Config) (*Config, error) {
 	c.Core.TempDir = setStringOrDefault(c.Core.TempDir, "./tmp")
 	c.Core.ModuleDir = setStringOrDefault(c.Core.ModuleDir, "./modules")
 	c.Core.RemoteBaseDir = setStringOrDefault(c.Core.RemoteBaseDir, "$HOME")
-	c.SSH.Username = setStringOrDefault(c.SSH.Username, "root")
+	c.SSH.Username = setStringOrDefault(c.SSH.Username, os.Getenv("USER"))
 	c.SSH.Timeout = setStringOrDefault(c.SSH.Timeout, "20s")
 	if _, err := time.ParseDuration(c.SSH.Timeout); err == nil {
 		c.SSH.Timeout = "20s"

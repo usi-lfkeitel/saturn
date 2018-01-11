@@ -8,6 +8,7 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
+	"net"
 	"os"
 	"path"
 	"syscall"
@@ -16,6 +17,7 @@ import (
 	"github.com/usi-lfkeitel/saturn/src/utils"
 
 	"golang.org/x/crypto/ssh"
+	"golang.org/x/crypto/ssh/agent"
 	"golang.org/x/crypto/ssh/terminal"
 )
 
@@ -44,6 +46,12 @@ func LoadPrivateKey(config *utils.Config) error {
 		authMethods = append(authMethods, ssh.Password(config.SSH.Password))
 	}
 
+	if config.SSH.UseAgent {
+		if a := loadSSHAgent(); a != nil {
+			authMethods = append(authMethods, a)
+		}
+	}
+
 	if len(authMethods) == 0 {
 		authMethods = append(authMethods, ssh.Password(string(getPassword("SSH Password: "))))
 	}
@@ -55,6 +63,13 @@ func LoadPrivateKey(config *utils.Config) error {
 		Auth:            authMethods,
 		Timeout:         t,
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
+	}
+	return nil
+}
+
+func loadSSHAgent() ssh.AuthMethod {
+	if sshAgent, err := net.Dial("unix", os.Getenv("SSH_AUTH_SOCK")); err == nil {
+		return ssh.PublicKeysCallback(agent.NewClient(sshAgent).Signers)
 	}
 	return nil
 }

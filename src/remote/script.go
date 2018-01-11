@@ -1,16 +1,24 @@
 package remote
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 
 	"github.com/usi-lfkeitel/saturn/src/utils"
 )
 
 func GenerateScript(config *utils.Config, modules []string) (string, error) {
+	if !utils.FileExists(config.Core.TempDir) {
+		if err := os.MkdirAll(config.Core.TempDir, 0755); err != nil {
+			return "", err
+		}
+	}
+
 	tempFile, err := ioutil.TempFile(config.Core.TempDir, "")
 	if err != nil {
 		return "", err
@@ -66,7 +74,7 @@ main() {
 
 		m, err := getBinData(moduleFile)
 		if err != nil {
-			return err
+			return fmt.Errorf("Module not found %s", module)
 		}
 
 		goodModules[module] = true
@@ -92,5 +100,6 @@ func GetModuleList() []string {
 		m[i] = strings.Split(v, "/")[1]
 		m[i] = m[i][:len(m[i])-3]
 	}
+	sort.Strings(m)
 	return m
 }

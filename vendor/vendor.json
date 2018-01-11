@@ -45,6 +45,12 @@
 			"revisionTime": "2017-08-25T20:24:07Z"
 		},
 		{
+			"checksumSHA1": "NMRX0onGReaL9IfLr0XQ3kl5Id0=",
+			"path": "golang.org/x/crypto/ssh/agent",
+			"revision": "5f55bce93ad2c89f411e009659bb1fd83da36e7b",
+			"revisionTime": "2018-01-08T14:34:49Z"
+		},
+		{
 			"checksumSHA1": "nqWNlnMmVpt628zzvyo6Yv2CX5Q=",
 			"path": "golang.org/x/crypto/ssh/terminal",
 			"revision": "81e90905daefcd6fd217b62423c0908922eadb30",

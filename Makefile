@@ -19,7 +19,7 @@ LDFLAGS := -X 'main.version=$(VERSION)' \
 
 .PHONY: all doc fmt alltests test coverage benchmark lint vet saturn dist
 
-all: test saturn
+all: test build
 
 # development tasks
 doc:
@@ -51,8 +51,8 @@ vet:
 generate:
 	go generate ./cmd/saturn/main.go
 
-saturn:
-	GOBIN="$(GOBIN)" go install -v -ldflags "$(LDFLAGS)" -tags '$(BUILDTAGS)' ./cmd/saturn
+build:
+	go build -o "bin/saturn" -v -ldflags "$(LDFLAGS)" -tags '$(BUILDTAGS)' ./cmd/saturn
 
 dist: vet all
 	@rm -rf ./dist

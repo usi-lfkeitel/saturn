@@ -91,7 +91,7 @@ func main() {
 
 	config, err := utils.NewConfig(configFile)
 	if err != nil {
-		log.Println(err.Error())
+		log.Printf("Error reading config: %s", err.Error())
 		os.Exit(1)
 	}
 
@@ -99,31 +99,31 @@ func main() {
 	config.Core.SpecialDebug = specialDebug
 
 	if err := remote.LoadPrivateKey(config); err != nil {
-		log.Println(err.Error())
+		log.Printf("Error loading SSH connection: %s", err.Error())
 		os.Exit(1)
 	}
 
 	checkedHosts, err := utils.CheckHosts(config, hostStatList)
 	if err != nil {
-		log.Println(err.Error())
+		log.Printf("Error error loading hosts: %s", err.Error())
 		os.Exit(1)
 	}
 
 	tempFileName, err := remote.GenerateScript(config, moduleList)
 	if err != nil {
 		os.Remove(tempFileName)
-		log.Println(err.Error())
+		log.Printf("Error generating remote script: %s", err.Error())
 		os.Exit(1)
 	}
 
 	if err := remote.UploadScript(config, checkedHosts, tempFileName); err != nil {
-		log.Println(err.Error())
+		log.Printf("Error uploading script: %s", err.Error())
 		os.Exit(1)
 	}
 
 	resps, err := remote.ExecuteScript(config, checkedHosts, tempFileName)
 	if err != nil {
-		log.Println(err.Error())
+		log.Printf("Error executing script: %s", err.Error())
 		os.Exit(1)
 	}
 

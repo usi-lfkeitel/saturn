@@ -44,7 +44,7 @@ useIPCmd() {
 
         # Get lists of IPv4 and v6 addresses
         v4addresses=$(echo "$interface" | $grepCmd -E 'inet ([[:digit:]]{1,3}\.?){4}/[[:digit:]]{1,2}')
-        v6addresses=$(echo "$interface" | $grepCmd -oE 'inet6 ([a-f0-9\:]+)')
+        v6addresses=$(echo "$interface" | $grepCmd -oE 'inet6 ([a-f0-9\:]+)/[[:digit:]]{1,2}')
 
         json="$json{\"interface\":\"$item\",\"mac_address\":\"$macaddr\",\"ipv4\":["
 
@@ -74,8 +74,9 @@ useIPCmd() {
 
         # Process the IPv6 addresses
         while read -r address6; do
-            add=$(echo $address6 | cut -d' ' -f2)
-            json="$json{\"address\":\"$add\",\"mask\":\"\",\"broadcast\":\"\"},"
+            add=$(echo $address6 | cut -d' ' -f2 | cut -d'/' -f1)
+            mask=$(echo $address6 | cut -d' ' -f2 | cut -d'/' -f2)
+            json="$json{\"address\":\"$add\",\"mask\":\"$mask\",\"broadcast\":\"\"},"
         done <<< "$v6addresses"
         json="${json%?}]},"
     done
