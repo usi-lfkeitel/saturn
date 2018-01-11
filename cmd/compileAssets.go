@@ -74,6 +74,7 @@ func writeHeader(w io.Writer) error {
 import (
 	"bytes"
 	"compress/gzip"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"path/filepath"
@@ -96,7 +97,7 @@ func getBinData(name string) ([]byte, error) {
 	}
 
 	if _, ok := _binData[name]; !ok {
-		return getLocalData(name)
+		return nil, fmt.Errorf("Static asset with name %s doesn't exist", name)
 	}
 
 	var uncompressed bytes.Buffer
@@ -113,15 +114,16 @@ func getLocalData(name string) ([]byte, error) {
 	return ioutil.ReadFile(name)
 }
 
-func getFileList() ([]string) {
-    files := make([]string, len(_binData))
-    i := 0
-    for k := range _binData {
-        files[i] = k
-        i++
-    }
-    return files
+func getFileList() []string {
+	files := make([]string, len(_binData))
+	i := 0
+	for k := range _binData {
+		files[i] = k
+		i++
+	}
+	return files
 }
+
 `))
 	return err
 }
