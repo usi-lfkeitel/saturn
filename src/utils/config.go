@@ -29,6 +29,7 @@ type Config struct {
 		Password   string
 		PrivateKey string
 		Timeout    string
+		UseAgent   bool
 	}
 	Hosts    []*ConfigHost
 	HostsMap map[string]*ConfigHost

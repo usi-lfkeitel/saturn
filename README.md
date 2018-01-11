@@ -21,6 +21,7 @@ Saturn requires a TOML configuration file to run. This specifies SSH connection 
 Username = "jsmith"
 #Password = ""
 PrivateKey = "/home/jsmith/.ssh/id_rsa"
+UseAgent = true # Use an SSH agent with the environment variable SSH_AUTH_SOCK
 
 [[hosts]]
 name = "Localhost"
