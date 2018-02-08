@@ -66,12 +66,8 @@ binary at build time. Custom modules can be used by placing them in the modules 
 named are based on their file name so it's recommended to keep them sort and use only alphanumeric characters, underscores, or
 hyphens. Other characters are not guaranteed to work. Custom modules cannot override builtin modules.
 
-A module file must output only JSON to stdout. A module may output either a JSON array or object. A module file must have a
-`gen:module` comment on the second line so it can be added to the binary. The syntax of this line is as follows:
-`#gen:module [a|o] key1:type1,key2:type2,...`. The first parameter is either "a" or "o" depending on if the module outputs a JSON
-[a]rray or [o]bject. The letter must be lower-case. The key type pairs specify the schema of the JSON. Keys cannot start with a number
-or a comma/semicolon. Supported types are `string`, `int`, `bool`, and `float64`. The key names will be transformed as needed to
-conform with Go's variable naming syntax.
+A module file must output only JSON to stdout. A module may output either a JSON array or object. Please refer to the module
+headers section below for details.
 
 Here's a list of first-party modules:
 
@@ -108,3 +104,42 @@ Here's a list of first-party modules:
 - **swap**:
 - **upload_transfer_rate**:
 - **user_accounts**:
+
+### Module Headers
+
+A module file must have a metadata comment on the second line so it can be added to the binary.
+
+There are two forms, a short form and long form. The short form is used to return a simple array or objects or a single object.
+The syntax of this line is as follows: `#gen:module [a|o] key1:type1,key2:type2,...`. The first parameter is
+either "a" or "o" depending on if the module outputs a JSON [a]rray or [o]bject. The letter must be lower-case.
+The key type pairs specify the schema of the JSON. Keys cannot start with a number
+or a comma/semicolon. Supported types are `string`, `int`, `bool`, and `float64`. The key names will be transformed as needed to
+conform with Go's variable naming syntax.
+
+Here's an example from the cron module: `#gen:module a time:string,user:string,message:string`
+
+The long form is needed when the returned JSON is more complex for example return an object with values that are themselves
+objects.
+
+Here's an example of long form:
+
+```
+#gen:module2 a
+#type address
+#  address string
+#  broadcast string
+#  mask string
+#endtype
+#key interface string
+#key mac_address string
+#key ipv4 []address
+#key ipv6 []address
+#!gen:module2
+```
+
+The pound sign at the beginning of each line is required as the modules must be valid scripts.
+
+Each complex type is defined with a type/endtype block. The identifier after `type` is the name of that type.
+Key names and types are separated by newlines until endtype. A type cannot be defined inside another type but
+a type can be used in another type. All types must be defined. A key can also be an array of TYPE like `ipv4`
+above is an array of the type `address`.
