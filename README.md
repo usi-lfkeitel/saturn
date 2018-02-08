@@ -139,6 +139,10 @@ Here's an example of long form:
 
 The pound sign at the beginning of each line is required as the modules must be valid scripts.
 
+The metadata block is defined between `#gen:module2 [a|o]` and `#!gen:module2`. The a|o have the same
+meaning as the simple form. Whether the module will return an array of objects with the defined keys,
+or a single object with the keys.
+
 Each complex type is defined with a type/endtype block. The identifier after `type` is the name of that type.
 Key names and types are separated by newlines until endtype. A type cannot be defined inside another type but
 a type can be used in another type. All types must be defined. A key can also be an array of TYPE like `ipv4`
